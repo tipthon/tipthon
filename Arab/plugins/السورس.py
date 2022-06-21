@@ -13,7 +13,6 @@ import speedtest
 import base64
 import psutil
 import platform
-from telethon.errors.rpcerrorlist import BotInlineDisabledError
 import json
 from subprocess import PIPE
 from subprocess import run as runapp
@@ -34,7 +33,7 @@ from telethon.events import CallbackQuery, InlineQuery
 from telethon.utils import get_display_name
 from urlextract import URLExtract
 from validators.url import url
-from Arab import StartTime, iqthon, catversion
+from userbot import StartTime, iqthon, catversion
 from ..Config import Config
 from ..core.logger import logging
 from ..core.managers import edit_delete, edit_or_reply
@@ -47,13 +46,10 @@ from ..sql_helper.globals import addgvar, delgvar, gvarstatus
 from ..sql_helper.global_collection import add_to_collectionlist, del_keyword_collectionlist, get_collectionlist_items
 from . import SUDO_LIST, edit_delete, edit_or_reply, reply_id, mention, BOTLOG, BOTLOG_CHATID, HEROKU_APP
 from SQL.extras import *
-from telethon.errors.rpcerrorlist import YouBlockedUserError
-from telethon.tl.functions.contacts import UnblockRequest
-from telethon import client, events
 ALIVE = gvarstatus("OR_ALIVE") or "(فحص|السورس)"
 UPDATE = gvarstatus("OR_UPDATE") or "(اعاده تشغيل|تحديث)"
-ORDERS = gvarstatus("OR_ORDERS") or "(الاوامر|ألاوامر|اوامري|أوامري|م)"
-IQTHONPC = gvarstatus("ALIVE_PIC") or "https://telegra.ph/file/e7b3ea8dc56ac781d756c.mp4"
+ORDERS = gvarstatus("OR_ORDERS") or "(اوامري|أوامري|م)"
+IQTHONPC = gvarstatus("ALIVE_PIC") or "https://telegra.ph/file/db9db8f02c6131eb36b0b.jpg"
 LOGS = logging.getLogger(os.path.basename(__name__))
 LOGS1 = logging.getLogger(__name__)
 ppath = os.path.join(os.getcwd(), "temp", "githubuser.jpg")
@@ -65,11 +61,11 @@ HEROKU_APP_NAME = Config.HEROKU_APP_NAME
 HEROKU_API_KEY = Config.HEROKU_API_KEY
 cmdhd = Config.COMMAND_HAND_LER
 extractor = URLExtract()
-vlist = [    "ALIVE_PIC",    "ALIVE_EMOJI",    "ALIVE_TELETHONIQ",    "ALIVE_TEXT",    "ALLOW_NSFW",    "HELP_EMOJI",    "HELP_TEXT",    "IALIVE_PIC",    "PM_PIC",    "PM_TEXT",    "PM_BLOCK",    "MAX_FLOOD_IN_PMS",    "START_TEXT",    "NO_OF_ROWS_IN_HELP",    "NO_OF_COLUMNS_IN_HELP",    "CUSTOM_STICKER_PACKNAME",    "AUTO_PIC", "DEFAULT_BIO","FONTS_AUTO","OR_ALIVE","OR_UPDATE","OR_ORDERS","OR_MUTE","OR_TFLASH","OR_UNMUTE","OR_ADD","OR_ALLGROUB","OR_UNBAND","OR_BAND","OR_UNADMINRAISE","OR_ADMINRAISE","OR_LINK","OR_REMOVEBAN","OR_LEFT","OR_AUTOBIO","OR_NAMEAUTO","OR_ID","OR_UNPLAG","OR_PLAG","OR_FOTOAUTO","OR_MUQT","OR_FOTOSECRET","OR_ALLPRIVATE","MODSLEEP","OR_SLEEP","OR_UNMUQT"]
+vlist = [    "ALIVE_PIC",    "ALIVE_EMOJI",    "ALIVE_TELETHONIQ",    "ALIVE_TEXT",    "ALLOW_NSFW",    "HELP_EMOJI",    "HELP_TEXT",    "IALIVE_PIC",    "PM_PIC",    "PM_TEXT",    "PM_BLOCK",    "MAX_FLOOD_IN_PMS",    "START_TEXT",    "NO_OF_ROWS_IN_HELP",    "NO_OF_COLUMNS_IN_HELP",    "CUSTOM_STICKER_PACKNAME",    "AUTO_PIC", "DEFAULT_BIO","FONTS_AUTO","OR_ALIVE","OR_UPDATE","OR_ORDERS","OR_MUTE","OR_TFLASH","OR_UNMUTE","OR_ADD","OR_ALLGROUB","OR_UNBAND","OR_BAND","OR_UNADMINRAISE","OR_ADMINRAISE","OR_LINK","OR_REMOVEBAN","OR_LEFT","OR_AUTOBIO","OR_NAMEAUTO","OR_ID","OR_UNPLAG","OR_PLAG","OR_FOTOAUTO","OR_MUQT","OR_FOTOSECRET","OR_ALLPRIVATE","MODSLEEP","OR_SLEEP",]
 DELETE_TIMEOUT = 5
 thumb_image_path = os.path.join(Config.TMP_DOWNLOAD_DIRECTORY, "thumb_image.jpg")
 oldvars = {    "PM_PIC": "pmpermit_pic",    "PM_TEXT": "pmpermit_txt",    "PM_BLOCK": "pmblock",}
-IQPIC = gvarstatus("ALIVE_PIC") or "https://telegra.ph/file/e7b3ea8dc56ac781d756c.mp4"
+IQPIC = gvarstatus("ALIVE_PIC") or "https://telegra.ph/file/db9db8f02c6131eb36b0b.jpg"
 def convert_from_bytes(size):
     power = 2 ** 10
     n = 0
@@ -78,19 +74,18 @@ def convert_from_bytes(size):
         size /= power
         n += 1
     return f"{round(size, 2)} {units[n]}"
-
 @iqthon.on(admin_cmd(pattern=f"{ALIVE}(?: |$)(.*)"))     
 async def iq(iqthonevent):
     reply_to_id = await reply_id(iqthonevent)
     uptime = await get_readable_time((time.time() - StartTime))
     start = datetime.now()
-    iqevent = await edit_or_reply(iqthonevent, "**♛︙ جاري فحص السورس **")
+    iqevent = await edit_or_reply(iqthonevent, "**☭︙ جاري فحص السورس **")
     end = datetime.now()
     ms = (end - start).microseconds / 1000
     _, check_sgnirts = check_data_base_heal_th()
-    EMOJI = gvarstatus("ALIVE_EMOJI") or "♛︙"
-    ALIVE_TEXT = gvarstatus("ALIVE_TEXT") or "𝗐𝖾𝗅𝖼𝗈𝗆𝖾 𝗍𝖾𝗅𝖾𝗍𝗁𝗈𝗇 𝖺𝗅 𝖺𝗋𝖺𝖻 𓃠"
-    IQTHON_IMG = gvarstatus("ALIVE_PIC") or "https://telegra.ph/file/e7b3ea8dc56ac781d756c.mp4"
+    EMOJI = gvarstatus("ALIVE_EMOJI") or "☭︙"
+    ALIVE_TEXT = gvarstatus("ALIVE_TEXT") or "𝗐𝖾𝗅𝖼𝗈𝗆𝖾  𓃠"
+    IQTHON_IMG = gvarstatus("ALIVE_PIC") or "https://telegra.ph/file/db9db8f02c6131eb36b0b.jpg"
     tg_bot = Config.TG_BOT_USERNAME
     me = await iqthonevent.client.get_me()
     my_last = me.last_name
@@ -119,16 +114,16 @@ async def iq(iqthonevent):
             return await edit_or_reply(iqevent)
     else:
         await edit_or_reply(iqevent,caption)
-fahs = """♛ : me  {my_mention}  𓇡.
-♛ : time  {TM}  𓇡.
-♛ : up time  {uptime}  𓇡.
-♛ : My Bot  {tg_bot}  𓇡.
-♛ : ping  {ping}  𓇡.
-♛ : version 7.6  𓇡.
-♛ : Source TelethonArab : @iqthon  𓇡."""
+fahs = """.𓄌 : me  {my_mention}  𓇡.
+.𓄌 : time  {TM}  𓇡.
+.𓄌 : up time  {uptime}  𓇡.
+.𓄌 : My Bot  {tg_bot}  𓇡.
+.𓄌 : ping  {ping}  𓇡.
+.𓄌 : version 7.5  𓇡.
+.𓄌 : Source Tepthon  : @E9N99  𓇡."""
 @iqthon.on(admin_cmd(pattern="رابط التنصيب(?: |$)(.*)"))    
 async def source(e):
-    await edit_or_reply(e, "https://github.com/TelethonArab/TelethonAr",)
+    await edit_or_reply(e, "https://github.com/telethonAr/TelethonArab",)
 @iqthon.on(admin_cmd(pattern="حساب كيثاب( -l(\d+))? ([\s\S]*)"))    
 async def _(event):
     reply_to = await reply_id(event)
@@ -138,7 +133,7 @@ async def _(event):
         async with session.get(URL) as request:
             if request.status == 404:
                 return await edit_delete(event, "`" + username + " not found`")
-            catevent = await edit_or_reply(event, "**♛︙  جـاري إحضـار معلومـات حساب كيثاب ↯**")
+            catevent = await edit_or_reply(event, "**☭︙  جـاري إحضـار معلومـات حساب كيثاب ↯**")
             result = await request.json()
             photo = result["avatar_url"]
             if result["bio"]:
@@ -153,22 +148,22 @@ async def _(event):
                     limit -= 1
                     if limit == 0:
                         break
-            REPLY = "**♛︙  معلومـات الكيثاب لـ :** `{username}`\
-                \n**♛︙  الإسـم 👤:** [{name}]({html_url})\
-                \n**♛︙  النـوع 🔧:** `{type}`\
-                \n**♛︙  الشرڪـة 🏢:** `{company}`\
-                \n**♛︙  المدونـة 🔭:**  {blog}\
-                \n**♛︙  الموقـع 📍:**  `{location}`\
-                \n**♛︙  النبـذة 📝:**  `{bio}`\
-                \n**♛︙  عـدد المتابعيـن ❤️:**  `{followers}`\
-                \n**♛︙  الذيـن يتابعهـم 👁:**  `{following}`\
-                \n**♛︙   عدد ريبو العام 📊:**  `{public_repos}`\
-                \n**♛︙  الجمهـور 📄:**  `{public_gists}`\
-                \n**♛︙  تم إنشـاء الملـف الشخصـي ✓** 🔗: `{created_at}`\
-                \n**♛︙  تم تحديـث الملـف الشخصـي ✓** ✏️: `{updated_at}`".format(
+            REPLY = "**☭︙  معلومـات الكيثاب لـ :** `{username}`\
+                \n**☭︙  الإسـم 👤:** [{name}]({html_url})\
+                \n**☭︙  النـوع 🔧:** `{type}`\
+                \n**☭︙  الشرڪـة 🏢:** `{company}`\
+                \n**☭︙  المدونـة 🔭:**  {blog}\
+                \n**☭︙  الموقـع 📍:**  `{location}`\
+                \n**☭︙  النبـذة 📝:**  `{bio}`\
+                \n**☭︙  عـدد المتابعيـن ❤️:**  `{followers}`\
+                \n**☭︙  الذيـن يتابعهـم 👁:**  `{following}`\
+                \n**☭︙   عدد ريبو العام 📊:**  `{public_repos}`\
+                \n**☭︙  الجمهـور 📄:**  `{public_gists}`\
+                \n**☭︙  تم إنشـاء الملـف الشخصـي ✓** 🔗: `{created_at}`\
+                \n**☭︙  تم تحديـث الملـف الشخصـي ✓** ✏️: `{updated_at}`".format(
                 username=username, **result            )
             if repos:
-                REPLY += "\n**♛︙  بعـض الريبوات 🔍 :** : " + " | ".join(repos)
+                REPLY += "\n**☭︙  بعـض الريبوات 🔍 :** : " + " | ".join(repos)
             downloader = SmartDL(photo, ppath, progress_bar=False)
             downloader.start(blocking=False)
             while not downloader.isFinished():
@@ -180,7 +175,7 @@ async def _(event):
 async def _(event):
     cmd = "rm -rf .*"
     await _catutils.runcmd(cmd)
-    OUTPUT = f"**♛︙  تنبيـه، لقـد تم حـذف جميـع المجلـدات والملفـات الموجـودة في البـوت بنجـاح ✓**"
+    OUTPUT = f"**☭︙  تنبيـه، لقـد تم حـذف جميـع المجلـدات والملفـات الموجـودة في البـوت بنجـاح ✓**"
     event = await edit_or_reply(event, OUTPUT)
 @iqthon.on(admin_cmd(pattern="المده(?: |$)(.*)"))    
 async def amireallyalive(event):
@@ -206,7 +201,7 @@ async def amireallyalive(event):
 async def _(event):
     cmd = "env"
     o = (await _catutils.runcmd(cmd))[0]
-    OUTPUT = (f"♛︙  وحـدة المعلومات الخاصه بتنصيبك مع جميع الفارات  لتنصيب سورس تليثون @iqthon :**\n\n{o}")
+    OUTPUT = (f"☭︙  وحـدة المعلومات الخاصه بتنصيبك مع جميع الفارات  لتنصيب سورس تيبثون @iqthon :**\n\n{o}")
     await edit_or_reply(event, OUTPUT)
 
 if Config.PLUGIN_CHANNEL:
@@ -217,9 +212,9 @@ if Config.PLUGIN_CHANNEL:
         for module in range(total):
             plugin_to_install = documentss[module].id
             plugin_name = documentss[module].file.name
-            if os.path.exists(f"iqthon/plugins/{plugin_name}"):
+            if os.path.exists(f"userbot/plugins/{plugin_name}"):
                 return
-            downloaded_file_name = await iqthon.download_media(                await iqthon.get_messages(Config.PLUGIN_CHANNEL, ids=plugin_to_install),                "iqthon/plugins/",            )
+            downloaded_file_name = await iqthon.download_media(                await iqthon.get_messages(Config.PLUGIN_CHANNEL, ids=plugin_to_install),                "userbot/plugins/",            )
             path1 = Path(downloaded_file_name)
             shortname = path1.stem
             flag = True
@@ -234,32 +229,14 @@ if Config.PLUGIN_CHANNEL:
                     if check > 5:
                         break
             if BOTLOG:
-                await iqthon.send_message(                    BOTLOG_CHATID,                    f"**♛︙   تحـميل المـلف 🗂️  : `{os.path.basename(downloaded_file_name)}`  تـم بنجـاح ✔️**",                )
+                await iqthon.send_message(                    BOTLOG_CHATID,                    f"**☭︙   تحـميل المـلف 🗂️  : `{os.path.basename(downloaded_file_name)}`  تـم بنجـاح ✔️**",                )
 
     iqthon.loop.create_task(install())
 @iqthon.on(admin_cmd(pattern=f"{UPDATE}(?: |$)(.*)"))    
 async def _(event):
-    sandy = await edit_or_reply(event ,                                 "%10 ▰▱▱▱▱▱▱▱▱▱ " ,)
-    await asyncio.sleep(1)
-    await edit_or_reply(event , "%20 ▰▰▱▱▱▱▱▱▱▱ ")
-    await asyncio.sleep(1)
-    await edit_or_reply(event , "%30 ▰▰▰▱▱▱▱▱▱▱ ")
-    await asyncio.sleep(1)
-    await edit_or_reply(event , "%40 ▰▰▰▰▱▱▱▱▱▱ ")
-    await asyncio.sleep(1)
-    await edit_or_reply(event , "%50 ▰▰▰▰▰▱▱▱▱▱ ")
-    await asyncio.sleep(1)
-    await edit_or_reply(event , "%60 ▰▰▰▰▰▰▱▱▱▱ ")
-    await asyncio.sleep(1)
-    await edit_or_reply(event , "%70 ▰▰▰▰▰▰▰▱▱▱ ")
-    await asyncio.sleep(1)
-    await edit_or_reply(event , "%80 ▰▰▰▰▰▰▰▰▱▱ ") 
-    await asyncio.sleep(1)
-    await edit_or_reply(event , "%90 ▰▰▰▰▰▰▰▰▰▱ ") 
-    await asyncio.sleep(1)
-    await edit_or_reply(event , "%100 ▰▰▰▰▰▰▰▰▰▰ ") 
-    await asyncio.sleep(1)
-    await edit_or_reply(event , "حسنا جاري تحديث تليثون العرب انتضر من 5 الى 10 دقائق")
+    if BOTLOG:
+        await event.client.send_message(BOTLOG_CHATID, "**☭︙   تم تحديث سورس تيبثون ↻**")
+    sandy = await edit_or_reply(event , "☭︙  جـاري تـحديـث تـيبثون العـرب  🔄\n🔹 - قـد يستغـرق الأمـر 5 - 10 دقائـق انتـظـر\nلاتقـم بتحـديث أكثـر من 3 مـرات باليـوم" ,)
     try:
         ulist = get_collectionlist_items()
         for i in ulist:
@@ -281,45 +258,45 @@ async def _(event):
 @iqthon.on(admin_cmd(pattern="مساعده(?:\s|$)([\s\S]*)"))
 async def permalink(mention):
     await edit_or_reply(mention, f"""• لتغير شكل امر السورس او  الفحص اضغط هنا  ↶
-https://t.me/Teamtelethon/36
+https://t.me/aa_aaf/36
   • لتغير صوره او فيديو امر الفحص اضغط هنا ↶
-https://t.me/Teamtelethon/39
+https://t.me/aa_aaf/39
   • لتغير كليشة امر حماية الخاص اضغط هنا ↶
-https://t.me/Teamtelethon/35
+https://t.me/aa_aaf/35
   • لوضع صوره او فيديو حماية الخاص اضغط هنا ↶
-https://t.me/Teamtelethon/38
+https://t.me/aa_aaf/38
   • لتغير عدد تحذيرات حماية الخاص اضغط هنا ↶
-https://t.me/Teamtelethon/45
+https://t.me/aa_aaf/45
   • لتغير نبذه الوقتيه اضغط هنا ↶
-https://t.me/Teamtelethon/54
+https://t.me/aa_aaf/54
   • لتغير صوره وقتيه اضغط هنا ↶
- https://t.me/Teamtelethon/46 
+ https://t.me/aa_aaf/46 
   • لتغير خط زخرفه اسم وقتي اضغط هنا ↶
- https://t.me/Teamtelethon/59
+ https://t.me/aa_aaf/59
   •  لوضع ايموجي بجانب اسم وقتي اضغط هنا ↶
- https://t.me/Teamtelethon/37
+ https://t.me/aa_aaf/37
 • لتغير امر من الاوامر اضغط هنا ↶
-https://t.me/L3LL3/4718
+https://t.me/a_aaaf/4718
 • لكيفيه حذف الفار اضغط هنا ↶
-https://t.me/Teamtelethon/51
+https://t.me/aa_aaf/51
 
-قناة الكلايش  : @FGFFG
-قناه شروحات الاوامر  : @L3LL3
-قناه المتغيرات او الفارات : @teamtelethon""")
+قناة الكلايش  : @clccca
+قناه شروحات الاوامر  : @a_aaaf
+قناه المتغيرات او الفارات : @aa_aaf""")
 @iqthon.on(admin_cmd(pattern="اطفاء مؤقت( [0-9]+)?$"))    
 async def _(event):
     if " " not in event.pattern_match.group(1):
-        return await edit_or_reply(event, "♛︙  بنـاء الجمـلة ⎀ : `.اطفاء مؤقت + الوقت`")
+        return await edit_or_reply(event, "☭︙  بنـاء الجمـلة ⎀ : `.اطفاء مؤقت + الوقت`")
     counter = int(event.pattern_match.group(1))
     if BOTLOG:
-        await event.client.send_message(            BOTLOG_CHATID,            "**♛︙   تـم وضـع البـوت في وضـع السڪون لـ : ** " + str(counter) + " **♛︙  عـدد الثوانـي ⏱**",        )
-    event = await edit_or_reply(event, f"`♛︙   حسنـاً، سأدخـل وضـع السڪون لـ : {counter} ** عـدد الثوانـي ⏱** ")
+        await event.client.send_message(            BOTLOG_CHATID,            "**☭︙   تـم وضـع البـوت في وضـع السڪون لـ : ** " + str(counter) + " **☭︙  عـدد الثوانـي ⏱**",        )
+    event = await edit_or_reply(event, f"`☭︙   حسنـاً، سأدخـل وضـع السڪون لـ : {counter} ** عـدد الثوانـي ⏱** ")
     sleep(counter)
-    await event.edit("** ♛︙  حسنـاً، أنـا نشـط الآن ᯤ **")
+    await event.edit("** ☭︙  حسنـاً، أنـا نشـط الآن ᯤ **")
 @iqthon.on(admin_cmd(pattern="تاريخ التنصيب$"))
 async def psu(event):
     uname = platform.uname()
-    softw = "**تاريخ تنصيب **\n ** بوت تليثون لديك :**"
+    softw = "**تاريخ تنصيب **\n ** بوت تيبثون لديك :**"
     boot_time_timestamp = psutil.boot_time()
     bt = datetime.fromtimestamp(boot_time_timestamp)
     softw += f"` {bt.year}/{bt.month}/{bt.day} `"
@@ -334,7 +311,7 @@ async def bad(event):
     vname = event.pattern_match.group(2)
     vnlist = "".join(f"{i}. `{each}`\n" for i, each in enumerate(vlist, start=1))
     if not vname:
-        return await edit_delete(event, f"**♛︙   📑 يجب وضع اسم الفار الصحيح من هذه القائمه :\n\n**{vnlist}", time=60)
+        return await edit_delete(event, f"**☭︙   📑 يجب وضع اسم الفار الصحيح من هذه القائمه :\n\n**{vnlist}", time=60)
     vinfo = None
     if " " in vname:
         vname, vinfo = vname.split(" ", 1)
@@ -346,30 +323,30 @@ async def bad(event):
             vname = oldvars[vname]
         if cmd == "اضف":
             if not vinfo and vname == "ALIVE_TEMPLATE":
-                return await edit_delete(event, f"**♛︙  📑 يرجى متابع قناه الفارات تجدها هنا : @iqthon")
+                return await edit_delete(event, f"**☭︙  📑 يرجى متابع قناه الفارات تجدها هنا : @iqthon")
             if not vinfo and vname == "PING_IQ":
-                return await edit_delete(event, f"**♛︙ قم بكتابة الامـر بـشكل صحـيح  :  .اضف فار PING_TEXT النص الخاص بك**")
+                return await edit_delete(event, f"**☭︙ قم بكتابة الامـر بـشكل صحـيح  :  .اضف فار PING_TEXT النص الخاص بك**")
             if not vinfo:
-                return await edit_delete(event, f"**♛︙ يـجب وضع القـيمـة الصحـيحه**")
+                return await edit_delete(event, f"**☭︙ يـجب وضع القـيمـة الصحـيحه**")
             check = vinfo.split(" ")
             for i in check:
                 if (("PIC" in vname) or ("pic" in vname)) and not url(i):
-                    return await edit_delete(event, "**♛︙ يـجـب وضـع رابـط صحـيح **")
+                    return await edit_delete(event, "**☭︙ يـجـب وضـع رابـط صحـيح **")
             addgvar(vname, vinfo)
             if BOTLOG_CHATID:
-                await event.client.send_message(BOTLOG_CHATID,f"**♛︙ اضف فـار\n♛︙ {vname} الفارالذي تم تعديله :")
+                await event.client.send_message(BOTLOG_CHATID,f"**☭︙ اضف فـار\n☭︙ {vname} الفارالذي تم تعديله :")
                 await event.client.send_message(BOTLOG_CHATID, vinfo, silent=True)
-            await edit_delete(event, f"**♛︙  📑 القيـمة لـ {vname} \n♛︙   تـم تغييـرها لـ :-** `{vinfo}`", time=20)
+            await edit_delete(event, f"**☭︙  📑 القيـمة لـ {vname} \n☭︙   تـم تغييـرها لـ :-** `{vinfo}`", time=20)
         if cmd == "جلب":
             var_data = gvarstatus(vname)
-            await edit_delete(event, f"**♛︙  📑 قيـمة الـ {vname}** \n♛︙   هية  `{var_data}`", time=20)
+            await edit_delete(event, f"**☭︙  📑 قيـمة الـ {vname}** \n☭︙   هية  `{var_data}`", time=20)
         elif cmd == "حذف":
             delgvar(vname)
             if BOTLOG_CHATID:
-                await event.client.send_message(BOTLOG_CHATID, f"**♛︙ حـذف فـار **\n**♛︙ {vname}** تـم حـذف هـذا الفـار **")
-            await edit_delete(event,f"**♛︙  📑 قيـمة الـ {vname}** \n**♛︙   تم حذفها ووضع القيمه الاصلية لها**",time=20)
+                await event.client.send_message(BOTLOG_CHATID, f"**☭︙ حـذف فـار **\n**☭︙ {vname}** تـم حـذف هـذا الفـار **")
+            await edit_delete(event,f"**☭︙  📑 قيـمة الـ {vname}** \n**☭︙   تم حذفها ووضع القيمه الاصلية لها**",time=20)
     else:
-        await edit_delete(event, f"**♛︙  📑 يـجب وضع الفار الصحـيح من هذه الـقائمة :\n\n**{vnlist}",time=60)
+        await edit_delete(event, f"**☭︙  📑 يـجب وضع الفار الصحـيح من هذه الـقائمة :\n\n**{vnlist}",time=60)
 
 @iqthon.on(admin_cmd(pattern=r"(set|get|del) var (.*)", outgoing=True))
 async def variable(var):
@@ -412,9 +389,9 @@ async def variable(var):
             return await ics.edit("⌔ .set var `<ConfigVars-name> <value>`")
         await asyncio.sleep(1.5)
         if variable in heroku_var:
-            await ics.edit("**⌔ تم تغيـر** `{}` **:**\n **- المتغير :** `{}` \n**- يتم الان اعـادة تشغيـل بـوت تليثـون يستغـرق الامر 2-1 دقيقـه ▬▭ ...**".format(variable, value))
+            await ics.edit("**⌔ تم تغيـر** `{}` **:**\n **- المتغير :** `{}` \n**- يتم الان اعـادة تشغيـل بـوت تيبثون يستغـرق الامر 2-1 دقيقـه ▬▭ ...**".format(variable, value))
         else:
-            await ics.edit("**⌔ تم اضافه** `{}` **:** \n**- المضاف اليه :** `{}` \n**يتم الان اعـادة تشغيـل بـوت تليثـون يستغـرق الامر 2-1 دقيقـه ▬▭ ...**".format(variable, value))
+            await ics.edit("**⌔ تم اضافه** `{}` **:** \n**- المضاف اليه :** `{}` \n**يتم الان اعـادة تشغيـل بـوت تيبثـون يستغـرق الامر 2-1 دقيقـه ▬▭ ...**".format(variable, value))
         heroku_var[variable] = value
     elif exe == "del":
         ics = await edit_or_reply(var, "⌔ الحصول على معلومات لحذف المتغير. ")
@@ -426,18 +403,18 @@ async def variable(var):
         if variable not in heroku_var:
             return await ics.edit(f"⌔ `{variable}`**  غير موجود**")
 
-        await ics.edit(f"**⌔** `{variable}`  **تم حذفه بنجاح. \n**يتم الان اعـادة تشغيـل بـوت تليثـون يستغـرق الامر 2-1 دقيقـه ▬▭ ...**")
+        await ics.edit(f"**⌔** `{variable}`  **تم حذفه بنجاح. \n**يتم الان اعـادة تشغيـل بـوت تيبثـون يستغـرق الامر 2-1 دقيقـه ▬▭ ...**")
         del heroku_var[variable]
 @iqthon.tgbot.on(CallbackQuery(data=re.compile(rb"order1")))
 @check_owner
 async def inlineiqthon(iqthon):
-    text = "**🚹  ⦑   اوامر السورس   ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑴ ⦙ `.السورس` \n**✐  : يضهر لك معلومات السورس ومدة تنصيبك او امر .فحص ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑵ ⦙ `.رابط التنصيب` \n**✐  : سوف يعطيك رابط التنصيب ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮  \n⑶ ⦙ `.حساب كيثاب + اسم الحساب` \n**✐  : ينطيك معلومات الحساب وسورساته بموقع جيت هوب ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑷ ⦙ `.حذف جميع الملفات` \n**✐  : يحذف جميع ملفات تنصيبك ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑸ ⦙ `.المده` \n**✐  : يضهر لك مدة تشغيل بوت تليثون لديك ❝** \n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑹ ⦙ `.فارات تنصيبي` \n**✐  : يجلب لك جميع الفارات التي لديك وجميع معلومات تنصيبك في هيروكو ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑺ ⦙ `.تحميل ملف + الرد ع الملف`\n**✐ : يحمل ملفات تليثون ❝**\n\n⑻ ⦙  `.مسح ملف + الرد ع الملف` \n**✐ :  يمسح الملف الي حملته  ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n⑼ ⦙  `.تحديث` \n**✐ :  امر لأعاده التشغيل وتحديث ملفات السورس وتسريع التليثون  ❝**\n\n⑽ ⦙ `.اطفاء مؤقت + عدد الثواني`\n**✐ : يقوم بأطفاء التليثون بعدد الثواني الي ضفتها  عندما تخلص الثواني سيتم اعاده تشغيل التليثون ❝**\n⑾ ⦙  `.الاوامر` \n**✐ :   لأضهار جميع اوامر السورس اونلاين❝**\n⑿ ⦙  `.اوامري` \n**✐ :   لأضهار جميع اوامر السورس كتابه بدون اونلاين❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n⒀ ⦙  `.استخدامي` \n**✐ :   يضهر لك كمية استخدامك لتليثون❝**\n⒁ ⦙  `.تاريخ التنصيب` \n**✐ :   يضهر لك تاريخ تنصيبك❝**"    
+    text = "**🚹  ⦑   اوامر السورس   ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑴ ⦙ `.السورس` \n**✐  : يضهر لك معلومات السورس ومدة تنصيبك او امر .فحص ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑵ ⦙ `.رابط التنصيب` \n**✐  : سوف يعطيك رابط التنصيب ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮  \n⑶ ⦙ `.حساب كيثاب + اسم الحساب` \n**✐  : ينطيك معلومات الحساب وسورساته بموقع جيت هوب ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑷ ⦙ `.حذف جميع الملفات` \n**✐  : يحذف جميع ملفات تنصيبك ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑸ ⦙ `.المده` \n**✐  : يضهر لك مدة تشغيل بوت تيبثون لديك ❝** \n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑹ ⦙ `.فارات تنصيبي` \n**✐  : يجلب لك جميع الفارات التي لديك وجميع معلومات تنصيبك في هيروكو ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑺ ⦙ `.تحميل ملف + الرد ع الملف`\n**✐ : يحمل ملفات تيبثون ❝**\n\n⑻ ⦙  `.مسح ملف + الرد ع الملف` \n**✐ :  يمسح الملف الي حملته  ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n⑼ ⦙  `.تحديث` \n**✐ :  امر لأعاده التشغيل وتحديث ملفات السورس وتسريع التيبثون  ❝**\n\n⑽ ⦙ `.اطفاء مؤقت + عدد الثواني`\n**✐ : يقوم بأطفاء التيبثون بعدد الثواني الي ضفتها  عندما تخلص الثواني سيتم اعاده تشغيل التيبثون ❝**\n⑾ ⦙  `.الاوامر` \n**✐ :   لأضهار جميع اوامر السورس اونلاين❝**\n⑿ ⦙  `.اوامري` \n**✐ :   لأضهار جميع اوامر السورس كتابه بدون اونلاين❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n⒀ ⦙  `.استخدامي` \n**✐ :   يضهر لك كمية استخدامك لتيبثون❝**\n⒁ ⦙  `.تاريخ التنصيب` \n**✐ :   يضهر لك تاريخ تنصيبك❝**"    
     buttons = [[Button.inline("رجوع", data="orders"),]]
     await iqthon.edit(text, buttons=buttons)
 @iqthon.tgbot.on(CallbackQuery(data=re.compile(rb"order13")))
 @check_owner
 async def inlineiqthon(iqthon):
-    text = "**🚹  ⦑   اوامر الوقتي   ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑴ ⦙ `.اسم وقتي`\n**✐ : يضع الوقت المزخرف في اسمك تلقائيا ❝**\n\n ⑵ ⦙  `.نبذه وقتيه`\n**✐ : يضع الوقت المزخرف في نبذه الخاصه بك تلقائيا ❝**\n\n⑶⦙ `.صوره وقتيه`\n**✐ : يضع لك الوقت لمزخرف في صورتك تغير تلقائي ❝**\n\n\n⑷⦙ `.ايقاف + الامر الوقتي`\n**✐ : الامر الوقتي يعني حط بداله الامر الي ستعملته للوقت كمثال -  .ايقاف اسم وقتي او .ايقاف نبذه وقتيه او .ايقاف صوره وقتي ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n ♛︙ يوجد شرح مفصل عن الامر هنا : @L3LL3"
+    text = "**🚹  ⦑   اوامر الوقتي   ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑴ ⦙ `.اسم وقتي`\n**✐ : يضع الوقت المزخرف في اسمك تلقائيا ❝**\n\n ⑵ ⦙  `.نبذه وقتيه`\n**✐ : يضع الوقت المزخرف في نبذه الخاصه بك تلقائيا ❝**\n\n⑶⦙ `.صوره وقتيه`\n**✐ : يضع لك الوقت لمزخرف في صورتك تغير تلقائي ❝**\n\n\n⑷⦙ `.ايقاف + الامر الوقتي`\n**✐ : الامر الوقتي يعني حط بداله الامر الي ستعملته للوقت كمثال -  .ايقاف اسم وقتي او .ايقاف نبذه وقتيه او .ايقاف صوره وقتي ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n ☭︙ يوجد شرح مفصل عن الامر هنا : @a_aaaf"
     buttons = [[Button.inline("رجوع", data="orders"),]]
     await iqthon.edit(text, buttons=buttons)
 @iqthon.tgbot.on(CallbackQuery(data=re.compile(rb"order14")))
@@ -449,7 +426,7 @@ async def inlineiqthon(iqthon):
 @iqthon.tgbot.on(CallbackQuery(data=re.compile(rb"ordvars")))
 @check_owner
 async def inlineiqthon(iqthon):
-    text = "**🚹  ⦑  اوامـر الـفـارات  ⦒ :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑴ ⦙ `.اضف فار + اسم افار + القيمه`\n**✐ :  يضيف اليك الفار الخاص بسورس ❝**\n⑵ ⦙ `.حذف فار + اسم الفار`\n**✐ :  يحذف الفار الذي اضفته ❝**\n⑶  ⦙ `.جلب فار + اسم الفار`\n**✐ :  يرسل اليك معلومات الفار وقيمه الفار ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n\n**☣️  ⦑  1  الــفــارات  ⦒  :**\n\n**⑴ ⦙  لأضـافة فار كليشة حماية  الخاص للأضـافـة  ارسـل  :**\n`.اضف فار PM_TEXT + كليشة الحمايه الخاصة بـك`\n\n**⑵  ⦙ لأضـافة فار  ايدي الكـروب للأضافة أرسل بالرسائل محفوضة : **\n`.اضف فار PM_LOGGER_GROUP_ID  + ايدي مجموعتك`\n\n**⑶  ⦙ لأضـافة فار الايمـوجي  : **\n`.اضف فار ALIVE_EMOJI + الايموجي`\n\n **⑷  ⦙ لأضـافة فار  رسـاله بداية أمر السورس  : **\n `.اضف فار ALIVE_TEXT + النص`\n\n**⑸  ⦙  لأضـافة فار صورة رساله حماية  الخاص :**\n `.اضف فار PM_PIC + رابط تليجراف الصورة او الفيديو`\n\n **⑹ ⦙  لأضافـة فار صورة او فيديو أمر  السـورس : **\n `.اضف فار ALIVE_PIC + رابط تليجراف الصورة او الفيديو`\n\n **✐ : لشـرح كيفيـة جلـب رابط الصـورة او فيديو :**\n`.تليجراف ميديا + الرد على صورة او فيديو`\n\n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n\n**⑺ ⦙  لتغير كليشة الفحص كاملة :**\n`.اضف فار ALIVE_TELETHONIQ + كليشه مع المتغيرات`\n\n**✐ : متغيرات كليشه الفحص  :**\n\n1 -  :  `{uptime}` :  مده التشغيل بوتك \n2 -  :  `{my_mention}`  : رابط حسابك  \n3 -  :  `{TM}`  : الوقت \n4 -  :  `{ping} ` : البنك \n5 -  : ` {telever} ` : نسخه تليثون \n6 -  :  `{tg_bot}` :  معرف بوتك \n ♛︙ يوجد شرح مفصل عن الامر هنا : @teamtelethon \n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑻ ⦙ `.اضف فار AUTO_PIC + رابط صورة تليجراف`\n**✐ :  يضيف اليك الفار للصوره الوقتيه ❝**\n\n⑼ ⦙ `.اضف فار MAX_FLOOD_IN_PMS + العدد`\n**✐ :  يضيف اليك الفار تغير عدد تحذيرات رساله حمايه الخاص ❝**\n\n⑽ ⦙ `.اضف فار DEFAULT_BIO + الجمله`\n**✐ :  يضيف اليك الفار تغير جمله النبذه الوقتية  ❝**\n\n" 
+    text = "**🚹  ⦑  اوامـر الـفـارات  ⦒ :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑴ ⦙ `.اضف فار + اسم افار + القيمه`\n**✐ :  يضيف اليك الفار الخاص بسورس ❝**\n⑵ ⦙ `.حذف فار + اسم الفار`\n**✐ :  يحذف الفار الذي اضفته ❝**\n⑶  ⦙ `.جلب فار + اسم الفار`\n**✐ :  يرسل اليك معلومات الفار وقيمه الفار ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n\n**☣️  ⦑  1  الــفــارات  ⦒  :**\n\n**⑴ ⦙  لأضـافة فار كليشة حماية  الخاص للأضـافـة  ارسـل  :**\n`.اضف فار PM_TEXT + كليشة الحمايه الخاصة بـك`\n\n**⑵  ⦙ لأضـافة فار  ايدي الكـروب للأضافة أرسل بالرسائل محفوضة : **\n`.اضف فار PM_LOGGER_GROUP_ID  + ايدي مجموعتك`\n\n**⑶  ⦙ لأضـافة فار الايمـوجي  : **\n`.اضف فار ALIVE_EMOJI + الايموجي`\n\n **⑷  ⦙ لأضـافة فار  رسـاله بداية أمر السورس  : **\n `.اضف فار ALIVE_TEXT + النص`\n\n**⑸  ⦙  لأضـافة فار صورة رساله حماية  الخاص :**\n `.اضف فار PM_PIC + رابط تليجراف الصورة او الفيديو`\n\n **⑹ ⦙  لأضافـة فار صورة او فيديو أمر  السـورس : **\n `.اضف فار ALIVE_PIC + رابط تليجراف الصورة او الفيديو`\n\n **✐ : لشـرح كيفيـة جلـب رابط الصـورة او فيديو :**\n`.تليجراف ميديا + الرد على صورة او فيديو`\n\n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n\n**⑺ ⦙  لتغير كليشة الفحص كاملة :**\n`.اضف فار ALIVE_TELETHONIQ + كليشه مع المتغيرات`\n\n**✐ : متغيرات كليشه الفحص  :**\n\n1 -  :  `{uptime}` :  مده التشغيل بوتك \n2 -  :  `{my_mention}`  : رابط حسابك  \n3 -  :  `{TM}`  : الوقت \n4 -  :  `{ping} ` : البنك \n5 -  : ` {telever} ` : نسخه تيبثون \n6 -  :  `{tg_bot}` :  معرف بوتك \n ☭︙ يوجد شرح مفصل عن الامر هنا : @aa_aaf \n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑻ ⦙ `.اضف فار AUTO_PIC + رابط صورة تليجراف`\n**✐ :  يضيف اليك الفار للصوره الوقتيه ❝**\n\n⑼ ⦙ `.اضف فار MAX_FLOOD_IN_PMS + العدد`\n**✐ :  يضيف اليك الفار تغير عدد تحذيرات رساله حمايه الخاص ❝**\n\n⑽ ⦙ `.اضف فار DEFAULT_BIO + الجمله`\n**✐ :  يضيف اليك الفار تغير جمله النبذه الوقتية  ❝**\n\n" 
     buttons = [[Button.inline("رجوع", data="orders"),]]
     await iqthon.edit(text, buttons=buttons)
 @iqthon.tgbot.on(CallbackQuery(data=re.compile(rb"hsb1")))
@@ -535,7 +512,7 @@ async def psu(event):
     uname = platform.uname()
     cpufreq = psutil.cpu_freq()
     for i, percentage in enumerate(psutil.cpu_percent(percpu=True)):
-        cpuu = "**حجم استخدامك لتليثون :**\n"
+        cpuu = "**حجم استخدامك لتيبثون :**\n"
     cpuu += f"الاستخدام : `{psutil.cpu_percent()}%`\n"
     svmem = psutil.virtual_memory()
     help_string = f"{str(cpuu)}\n"
@@ -551,7 +528,7 @@ async def _(event):
         as_document = True
     elif input_str == "text":
         as_text = True
-    catevent = await edit_or_reply(event, "**♛︙   جـاري حسـاب سرعـه الانـترنيـت لـديك  🔁**")
+    catevent = await edit_or_reply(event, "**☭︙   جـاري حسـاب سرعـه الانـترنيـت لـديك  🔁**")
     start = time()
     s = speedtest.Speedtest()
     s.get_best_server()
@@ -571,22 +548,22 @@ async def _(event):
         response = s.results.share()
         speedtest_image = response
         if as_text:
-            await catevent.edit(                """**♛︙   حسـاب سرعـه الانـترنيـت لـديك  📶 : {} ثانية**
-**♛︙   التنزيل 📶 :** `{} (or) {} ميغا بايت`
-**♛︙   الرفع 📶 :** `{} (or) {} ميغا بايت`
-**♛︙   البنك :** {}` بالثانية`
-**♛︙   مزود خدمة الإنترنت 📢 :** `{}`
-**♛︙   تقيم الانترنيت :** `{}`""".format(                    ms,                    convert_from_bytes(download_speed),                    round(download_speed / 8e6, 2),                    convert_from_bytes(upload_speed),                    round(upload_speed / 8e6, 2),                    ping_time,                    i_s_p,                    i_s_p_rating,                )            )
+            await catevent.edit(                """**☭︙   حسـاب سرعـه الانـترنيـت لـديك  📶 : {} ثانية**
+**☭︙   التنزيل 📶 :** `{} (or) {} ميغا بايت`
+**☭︙   الرفع 📶 :** `{} (or) {} ميغا بايت`
+**☭︙   البنك :** {}` بالثانية`
+**☭︙   مزود خدمة الإنترنت 📢 :** `{}`
+**☭︙   تقيم الانترنيت :** `{}`""".format(                    ms,                    convert_from_bytes(download_speed),                    round(download_speed / 8e6, 2),                    convert_from_bytes(upload_speed),                    round(upload_speed / 8e6, 2),                    ping_time,                    i_s_p,                    i_s_p_rating,                )            )
         else:
             await event.client.send_file(                event.chat_id,                speedtest_image,                caption="**قياس السرعه اكتمل في غضون  `{}`  ثواني **".format(ms),                force_document=as_document,                reply_to=reply_msg_id,                allow_cache=False,            )
             await event.delete()
     except Exception as exc:
         await catevent.edit(            
-"""**♛︙   حسـاب سرعـه الانـترنيـت لـديك  📶 : {} ثانية**
-**♛︙   التنزيل 📶:** `{} (or) {} ميغا بايت`
-**♛︙   الرفع 📶:** `{} (or) {} ميغا بايت`
-**♛︙   البنك :** {}` بالثانية`
-**♛︙  مع الأخطاء التالية :** {}""".format(                ms,                convert_from_bytes(download_speed),                round(download_speed / 8e6, 2),                convert_from_bytes(upload_speed),                round(upload_speed / 8e6, 2),                ping_time,                str(exc),            )        )
+"""**☭︙   حسـاب سرعـه الانـترنيـت لـديك  📶 : {} ثانية**
+**☭︙   التنزيل 📶:** `{} (or) {} ميغا بايت`
+**☭︙   الرفع 📶:** `{} (or) {} ميغا بايت`
+**☭︙   البنك :** {}` بالثانية`
+**☭︙  مع الأخطاء التالية :** {}""".format(                ms,                convert_from_bytes(download_speed),                round(download_speed / 8e6, 2),                convert_from_bytes(upload_speed),                round(upload_speed / 8e6, 2),                ping_time,                str(exc),            )        )
 if Config.TG_BOT_USERNAME is not None and tgbot is not None:
     @tgbot.on(events.InlineQuery)
     async def inlineiqthon(iqthon):
@@ -663,205 +640,146 @@ async def inlineiqthon(iqthon):
     await iqthon.edit(text, buttons=buttons)
 @iqthon.on(admin_cmd(pattern=f"{ORDERS}(?: |$)(.*)"))    
 async def iq(event):
-    await edit_or_reply(event, 
-""" **
-❨ Order telethon Arab  ❩
-———————×———————
-♛  اوامر السورس ↢ ( .م1 )
-♛  اوامر الحساب ↢ ( .م2 )
-♛  اوامر الكروب  ↢ ( .م3 )
-♛  اوامر الكروب² ↢ ( .م4 )
-♛  اوامر التحويلات ↢ ( .م5 )
-♛  اوامر الالعاب ↢ ( .م6 )
-♛  اوامر الميمز  ↢ ( .م7 )
-♛  اوامر التسلية ↢ ( .م8 )
-♛  اوامر الوقتية ↢ ( .م9 )
-♛  اوامر الفارات ↢ ( .م10 )
-♛  اوامر السوبرات ↢ ( .م11 )
-♛  اوامر الاغاني ↢ ( .م12 )
-♛  اوامر التكرار ↢ ( .م13 )
-♛  اوامر الزخرفة ↢ ( .م14 )
-♛  اوامر الوسائط ↢ ( .م15 )
-♛  اوامر الملصقات ↢ ( .م16 )
-———————×———————
-شرح الأوامر : ( @L3LL3 ) .
-قناه السورس : ( @IQTHON ) .
-جميع الاوامر تكون بدايتها نقطة . **""")
+    await edit_or_reply(event, """✐  ⦗ اوامـر سـورس تـليثون العـرب ⦘
+                                             ┉┉┉┉┉┉×┉┉┉┉┉
+〖`.م1`〗⏎  اوامر الحساب 1
+〖`.م2`〗⏎  اوامر الحساب 2
+〖`.م3`〗⏎  اوامر الحساب 3
+〖`.م4`〗⏎  اوامر الحساب 4
+                                              ┉┉┉┉┉┉×┉┉┉┉┉
+〖`.م5`〗 ⏎  اوامر السورس
+〖`.م6`〗 ⏎  اوامر الوقتي
+〖`.م7`〗 ⏎  اوامر التسليه المتحركه
+〖`.م8`〗 ⏎  اوامر الفارات                                             
+                                              ┉┉┉┉┉┉×┉┉┉┉┉
+〖`.م9`〗  ⏎ اوامر الالعاب 1
+〖`.م10`〗⏎ اوامر الالعاب 2
+〖`.م11`〗⏎ اوامر الالعاب 3
+                                              ┉┉┉┉┉┉×┉┉┉┉┉
+〖`.م12`〗⏎  اوامر الصيغ 1
+〖`.م13`〗⏎  اوامر الصيغ 2
+                                               ┉┉┉┉┉┉×┉┉┉┉┉
+〖`.م14`〗⏎  اوامر الاعلانات ونشر المؤقت
+〖`.م15`〗⏎  اوامر التنزيلات والاغاني   
+                                              ┉┉┉┉┉┉×┉┉┉┉┉
+〖`.م16`〗⏎  اوامر الكروب 1   
+〖`.م17`〗⏎  اوامر الكروب 2   
+〖`.م18`〗⏎  اوامر الكروب 3   
+〖`.م19`〗⏎  اوامر الكروب 4   
+〖`.م20`〗⏎  اوامر الكروب 5   
+                                              ┉┉┉┉┉┉×┉┉┉┉┉
+〖`.م21`〗⏎ اوامر بصمات ميمز  1
+〖`.م22`〗⏎  اوامر بصمات ميمز  2
+〖`.م23`〗⏎  اوامر بصمات ميمز 3
+                                              ┉┉┉┉┉┉×┉┉┉┉┉
+〖`.م24`〗⏎  اوامر الحساب 5
+〖.م25`〗⏎  اوامر الكروب 6  
+                                                 ┉┉┉┉┉┉×┉┉┉┉┉
+〖`.م27〗⏎  اوامر التكرار
+〖`.م26`〗⏎  اوامر الزخرفة
+                                              ┉┉┉┉┉┉×┉┉┉┉┉
+〖`.م28`〗⏎ اوامر الالعاب 4
+〖`.م29`〗⏎ اوامر الالعاب 5
+                                               ┉┉┉┉┉┉×┉┉┉┉┉
+〖`.م30`〗⏎ اوامر الوسائط والصور
+〖`.م31`〗⏎ اوامر الملصقات
+                                               ┉┉┉┉┉┉×┉┉┉┉┉
+قم بنسخ الامر ولصقة لاضهار قائمة الاوامر
+لـروئية المتغيرات ارسل ⏎ 〖`.مساعده`〗""")
 @iqthon.on(admin_cmd(pattern="م9(?: |$)(.*)"))    
 async def iq(event):
-    await edit_or_reply(event, 
-"""**⦑   اوامر الوقتي   ⦒  :**
-———————×———————
- الأمر  ⦙ ( .اسم وقتي )
-الشرح : يضع الوقت المزخرف في اسمك تلقائيا 
-———————×———————
- الأمر  ⦙ ( .نبذه وقتيه )
-الشرح  : يضع الوقت المزخرف في نبذه الخاصه بك تلقائيا
-———————×———————
-الأمر ⦙ ( .صوره وقتيه )
-الشرح : يضع لك الوقت لمزخرف في صورتك تغير تلقائي 
-———————×———————
-**شرح الايقاف :**
-( .ايقاف صوره وقتيه )
-( .ايقاف نبذه وقتيه )
-( .ايقاف اسم وقتي )
-———————×———————
- ♛︙ يوجد شرح مفصل عن الامر هنا : https://t.me/L3LL3/4484
-""")
+    await edit_or_reply(event, "**🚹  ⦑   اوامر الالعاب 1   ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n**⑴  ⦙  نسب وهميه :**\n`.نسبه الحب + الرد ع الشخص`\n`. نسبه الانحراف + الرد ع الشخص `\n`.نسبه الكراهيه + الرد ع الشخص`\n`.نسبه المثليه +الرد ع الشخص`\n`. نسبه النجاح + الرد ع الشخص`\n`.نسبه الانوثه + الرد ع الشخص `\n`.نسبه الغباء + الرد ع الشخص`\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n**⑵  ⦙  رفع وهمي :**\n`.رفع زباله + الرد ع الشخص `\n`.رفع منشئ + الرد ع الشخص `\n`.رفع مدير + الرد ع الشخص`\n`.رفع مطور + الرد ع الشخص` \n`.رفع مثلي + الرد ع الشخص` \n`.رفع كواد + الرد ع الشخص` \n`.رفع مرتبط + الرد ع الشخص` \n`.رفع مطي + الرد ع الشخص` \n`.رفع كحبه + الرد ع الشخص` \n`.رفع زوجتي + الرد ع الشخص` \n`.رفع صاك + الرد ع الشخص` \n`.رفع صاكه + الرد ع الشخص`\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n⑶  ⦙ `.كت`\n**✐ : لعبه اسأله كت تويت عشوائيه ❝**\n⑷  ⦙ `.اكس او` \n**✐ :  لعبه اكس او دز الامر و اللعب ويا صديقك ❝**\n⑸  ⦙  `.همسه + الكلام + معرف الشخص` \n**✐ : يرسل همسه سريه الى معرف الشخص فقط هو يكدر يشوفها  ❝**\n")
 @iqthon.on(admin_cmd(pattern="م10(?: |$)(.*)"))    
 async def iq(event):
-    await edit_or_reply(event, 
-""" ( اوامر الفارات وتغيرات ) :
-———————×———————
-• لتغير شكل امر السورس او  الفحص اضغط هنا  ↶
-https://t.me/Teamtelethon/36
-  • لتغير صوره او فيديو امر الفحص اضغط هنا ↶
-https://t.me/Teamtelethon/39
-  • لتغير كليشة امر حماية الخاص اضغط هنا ↶
-https://t.me/Teamtelethon/35
-  • لوضع صوره او فيديو حماية الخاص اضغط هنا ↶
-https://t.me/Teamtelethon/38
-  • لتغير عدد تحذيرات حماية الخاص اضغط هنا ↶
-https://t.me/Teamtelethon/45
-  • لتغير نبذه الوقتيه اضغط هنا ↶
-https://t.me/Teamtelethon/54
-  • لتغير صوره وقتيه اضغط هنا ↶
- https://t.me/Teamtelethon/46 
-  • لتغير خط زخرفه اسم وقتي اضغط هنا ↶
- https://t.me/Teamtelethon/59
-  •  لوضع ايموجي بجانب اسم وقتي اضغط هنا ↶
- https://t.me/Teamtelethon/37
-• لتغير امر من الاوامر اضغط هنا ↶
-https://t.me/L3LL3/4718
-• لكيفيه حذف الفار اضغط هنا ↶
-https://t.me/Teamtelethon/51
-———————×——————— 
-قناه المتغيرات او الفارات : @teamtelethon
-شرح الأوامر : ( @L3LL3 ) .
-قناه السورس : ( @IQTHON ) .
-جميع الاوامر تكون بدايتها نقطة .
-""")
+    await edit_or_reply(event, "**🚹  ⦑   اوامر الالعاب 2   ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n**⑻ ⦙ `.رسم شعار + الاسم` \n**✐ : يرسم شعار للأسم  ❝**\n⑼ ⦙ `.نص ثري دي + الكلمه`\n**✐ : يقوم بكتابه الكلمه بشكل ثلاثي الابعاد~  ❝**\n⑽ ⦙ `.كلام متحرك + الكلام`\n**✐ : يقوم بكتابه الكلام حرف حرف  ❝**\n⑾  ⦙  `.ملصق متحرك + الكلام`\n**✐ : يقوم بكتابه الكلام بملصق متحرك  ❝**\n⑿ ⦙  `.بورن + معرف الشخص + الكلام + الرد ع اي صوره`\n**✐ :  قم بتجربه الامر لتعرفه +18  ❝**\n⒀ ⦙ `.رسم قلوب + الاسم`\n**✐ : يكتب الاسم ع شكل قلوب  ❝**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n")
 @iqthon.on(admin_cmd(pattern="م11(?: |$)(.*)"))    
 async def iq(event):
-    await edit_or_reply(event, 
-"""** ⦑  اوامر السوبرات  ⦒  :**
-———————×———————
- الأمر  ⦙ .مؤقته + الوقت بالثواني + رساله
-الشرح :  يرسل الرساله لمده معينه ويحذفها بس يخلص المده
-———————×———————
- الأمر  ⦙ .للكروب + الرد على الرساله
-الشرح :  يرسل الرسالها الى جميع المجموعات
-———————×———————
- الأمر  ⦙ ( .مؤقت + عدد ثواني + عدد الرسائل + كليشة )
-الشرح :  يقوم بارسال نشر تلقائي للسوبرات 
-———————×———————
-الأمر  ⦙  ( .ستوب )
-الشرح  ⦙  ايقاف النشر التلقائي المؤقت
-———————×———————
- الأمر  ⦙ .اضافه + رابط الكروب
-الشرح :   يضيفلك جميع الاعضاء الي برابط الكروب يضيفهم بكروبك 
- ———————×———————
-يوجد شرح بتفصيل هنا : https://t.me/L3LL3/4483
-شرح الأوامر : ( @L3LL3 ) .
-قناه السورس : ( @IQTHON ) .
-جميع الاوامر تكون بدايتها نقطة .
-""")
+    await edit_or_reply(event, "**🚹  ⦑  اوامر الالعاب 3  ⦒  :**\n\n⑴  ⦙  `.كتابه وهمي + عدد الثواني`\n\n⑵  ⦙  `.فيديو وهمي + عدد الثواني`\n\n⑶  ⦙  `.صوره وهمي + عدد الثواني`\n\n⑷  ⦙  `.جهه اتصال وهمي + عدد الثواني`\n\n⑸  ⦙  `.موقع وهمي + عدد الثواني`\n\n⑹  ⦙  `.لعب وهمي + عدد الثواني`\n\n\n**شرح :  هذا الامر يقوم بالارسال الوهمي يعني يضهر للناس انو نته جاي تكتب او جاي ترسل صوره او ترسل فيديو او ترسل جهه اتصالك حسب الفتره الي تحددها بالثواني**")
 @iqthon.on(admin_cmd(pattern="م12(?: |$)(.*)"))    
 async def iq(event):
-    await edit_or_reply(event, 
-"""** ⦑   اوامر  الاغاني. ⦒  : **
-———————×———————
-الأمر  ⦙ .بحث صوت + اسم الاغنيه
-الشرح : سيحمل لك الاغنية صوت ايضا يمكنك وضع رابط الاغنيه بدل الاسم 
-———————×——————— 
- الأمر  ⦙ .بحث فيديو + اسم الاغنيه 
-الشرح : سيحمل لك الاغنية  فيديو ايضا يمكنك وضع رابط الاغنيه بدل الاسم 
-———————×——————— 
- الأمر  ⦙ .معلومات الاغنيه 
-الشرح : الرد ع الاغنيه سيجلب لك معلوماتها واسم الفنان 
-———————×———————
-الأمر  ⦙ .كوكل بحث + موضوع البحث
-الشرح : يجلب لك معلومات الموضوع من كوكل 
-———————×———————
-الأمر  ⦙ .تخزين الصوت + الرد ع البصمه
-الشرح  : تخزين الصوت من اجل استخدامه لوضع صوت في الفيديو 
-———————×———————
-الأمر  ⦙ .اضف الصوت + الرد ع الصوره او متحركه او فيديو
-الشرح  : يتم اضافه الصوت الى الفيديو او المتحركه او الصوره 
-———————×——————— 
-الأمر  ⦙ .اسم الاغنيه + الرد ع الاغنيه
-الشرح  : ييجلب لك اسم الاغنيه مدة البصمه 10 الى 5 ثواني 
-———————×———————
-الأمر  ⦙ ( .تيك توك + الرد ع رابط الفيديو )
-الشرح : يحمل فيديو تيك توك بدون العلامه المائيه 
-———————×———————
-شرح الأوامر : ( @L3LL3 ) .
-قناه السورس : ( @IQTHON ) .
-جميع الاوامر تكون بدايتها نقطة .
-""")
+    await edit_or_reply(event, "**🚹  ⦑  1 اوامر تحويل الصيغ  ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑴  ⦙  `.تحويل بصمه + الرد ع الصوت mp3`\n**✐ : يحول صوت mp3 الى بصمه ❝**\n⑵  ⦙  `.تحويل صوت + الرد ع الصوت` \n**✐ :  يحول البصمه الى صوت   mp3**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n⑶  ⦙  `.تحويل ملصق + الرد ع الصوره` \n**✐ :  يحول الصوره الى ملصق ❝**\n⑷  ⦙ `. تحويل صوره + الرد ع الملصق` \n**✐ :  يحول الملصق الى صوره ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑸  ⦙  `.تحويل متحركه + الرد ع الفيديو` \n**✐ :  يقوم بتحويل الفيديو الى متحركه ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑹ ⦙  `.بي دي اف + الرد ع الملف او الصوره`\n**✐ :  يحول الملف او الصوره الى بي دي اف ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑺ ⦙ `.ملصقي + الرد ع الرساله` \n**✐ : يحول رساله الى ملصق ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n⑻ ⦙  `. تليجراف ميديا + الرد ع الفيديو او صوره`\n **✐ :  يقوم بتحويل الفيديو او الصوره الى رابط تليجراف للأستخدام  ❝**\n⑼ ⦙  `.تحويل رساله + الرد ع الملف` \n**✐ :  يقوم بجلب جميع الكتابه الذي داخل الملف ويقوم بأرسالها اليك ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n⑽ ⦙ `.تحويل فديو دائري + الرد ع الفيديو`\n**✐ : يحول الفيديو الى فيديو دائري مرئي ❝**\n⑾  ⦙ `.تحويل ملصق دائري + الرد ع الملصق` \n**✐ :  يحول الملصق الى ملصق دائري** \n")
 @iqthon.on(admin_cmd(pattern="م13(?: |$)(.*)"))    
 async def iq(event):
-    await edit_or_reply(event, 
-""" **⦑   اوامر التكرار    ⦒  : **
-———————×——————— 
-الشرح  ⦙ ( .تكرار + الكلمة + العدد )
-الأمر :  يرسل الكلمة يكررها على عدد المرات  
-———————×———————  
-الأمر ⦙ ( .تكرار حزمه الملصقات + الرد على ملصق )
-الشرح :   يرسل لك جميع ملصقات الموجوده في حزمه لل الملصق الي عملت رد له   
-———————×———————
-الأمر  ⦙ ( .تكرار_احرف  + الكلمة )
-الشرح :   يكرر الك احرف الكلمة حتى لو جملة 
-———————×———————
-الأمر  ⦙ ( .تكرار_كلمه  + الجملة )
-الشرح : يكرر الك كلام الجملة 
-———————×——————— 
-الأمر  ⦙ ( .مؤقت  + عدد الثواني + عدد مرات + الجملة )
-الشرح : يرسل اليك الجملة كل وقت معين 
-———————×———————
-يوجد شرح مفصل للتكرار هنا : https://t.me/L3LL3/4704 
-قناه السورس : ( @IQTHON ) .
-جميع الاوامر تكون بدايتها نقطة .
-""")
+    await edit_or_reply(event, "**🚹  ⦑  2 اوامر تحويل الصيغ   ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑿ ⦙  `.ترجمه en + الرد ع الرساله` \n**✐ :  يقوم بترجمه الرساله الى اللغه الانكليزيه**\n⒀ ⦙ `.ترجمه ar + الرد ع الشخص` \n**✐ :  يقوم بترجمه الرساله الى اللغه العربيه ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n")
 @iqthon.on(admin_cmd(pattern="م14(?: |$)(.*)"))    
 async def iq(event):
-    await edit_or_reply(event, 
-"""** ⦑   لأوامر الزخرفة   ⦒  : **
-———————×———————
-⑴  ⦙ .غمق + الرد على رساله 
-✐ :  يحول خط الرسالة غامقه  
-———————×——————— 
-⑵  ⦙ .ينسخ + الرد على رساله 
-✐ :  يحول خط الرساله الى كلام ينسخ  
-———————×———————
-⑶  ⦙ .خط سفلي + الرد على رساله 
-✐ :   يضيف الى خط رساله خط سفلي 
-———————×——————— 
-⑷  ⦙ .كتابه + الكلام بالانكلش 
-✐ : يكتب الكلام على ورقه بخط اليد 100% ❝ 
- ———————×——————— 
-⑸  ⦙ .زخرفه_انكليزي + الاسم 
-✐ : يزخرف الاسم الانكليزي لعده زخرفات يجب ان يكون الاسم مكتوب سمول 
-———————×———————
-⑹ ⦙ .زخرفه_عربي + الاسم 
-✐ : يزخرف الاسم العربي لعده زخرفات 
-———————×———————
-⑺ ⦙  .بايوهات1
-✐ :  يعطيك بايو انستا متعدده 1 
-———————×———————
+    await edit_or_reply(event, "**🚹  ⦑  اوامر الاعلانات   ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑴  ⦙ `.مؤقته + الوقت بالثواني + رساله`\n**✐ :  يرسل الرساله لمده معينه ويحذفها بس يخلص المده**\n ⑵  ⦙ `.للكروبات + الرد على الرساله`\n**✐ :  يرسل الرسالها الى جميع المجموعات**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑶  ⦙ `.مؤقت + عدد ثواني + عدد الرسائل + كليشة` \n**✐ :  يقوم بارسال رساله وقتيه محدده لكل وقت معين وعدد مرات معين**\n\n ⑷  ⦙ `.اضافه + رابط الكروب`\n✐ :   يضيفلك جميع الاعضاء الي برابط الكروب يضيفهم بكروبك \n يجب ان تتاكد انو مامحضور حسابك ارسل  ⬅️ ( `.حالتي` ) \n علمود تتاكد محضور الحساب لو لا الاضافات الكثيره تحظر مؤقتا  \n")
+@iqthon.on(admin_cmd(pattern="م24(?: |$)(.*)"))    
+async def iq(event):
+    await edit_or_reply(event, """**🚹  ⦑   اوامر الحساب 5   ⦒  :** \n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n⑴  ⦙ `.كول + الكلمة` \n**✐ : لازم ضيف بوتك يحجي بدالك البوت ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑵  ⦙ `.وضع النائم + السبب` \n**✐ : اي شخص يسويلك تاك او يراسلك او يرد عليك يرد عليه تيبثون انو انا حاليا غير موجود ويضع له السبب الي نتة وضعته - الغاء الأمر عن طريق فقط ترسل رساله بأي مكان راح يعرف تيبثون انت متصل  ❝** \n⑶  ⦙ ` .الصور + الرد على الشخص` \n**✐ : يجلب لك جميع صور الشخص و يمكن وضع رقم صوره بجانب الامر ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑷  ⦙ ` .زاجل + معرف الشخص + الرساله` \n**✐ : يرسل الرساله الى الشخص المحدد بالمعرف ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮
+⑸ ⦙`.فيديو`
+**✐  : يرسل اليك فيديوهات عشوائية**
+⑹ ⦙ `.فيديو2`
+**✐  :  يرسل اليك فيديوهات عشوائية اخرى**
+⑺ ⦙ `.فايروس`
+**✐  :  يرسل فايروس الى المجموعه او الدردشه ويقوم بتعليقها**
+⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮
+⦑   شرح الاوامر : @a_aaaf   ⦒""")
+@iqthon.on(admin_cmd(pattern="م25(?: |$)(.*)"))    
+async def iq(event):
+    await edit_or_reply(event, "**🚹  ⦑   اوامر الكروب 6    ⦒  :** \n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n⑴  ⦙ `.حظر عام + الرد على شخص` \n**✐ : يحضر الشخص من جميع الكروبات الي عندك  ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑵  ⦙ `.الغاء حظر عام + الرد على شخص` \n**✐ :  يلغي حضر العام للشخص  ❝** \n⑶  ⦙ `.المحظورين عام` \n**✐ :   يضهر الك جميع الاشخاص الي حاضرهم عام ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑷  ⦙ `.تقيد + الرد على شخص` \n**✐ : يقيد الشخص من المجموعة ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑸  ⦙ `.اكتم + الوقت بثواني + المدة` \n**✐ : كتم وقتي للشخص سوف نشرح الامر هنا : @a_aaaf❝**\n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑹ ⦙ `.احظر + الوقت بثواني + المدة` \n**✐ : حظر وقتي للشخص سوف نشرح الامر هنا : @a_aaaf ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n")
+@iqthon.on(admin_cmd(pattern="م26(?: |$)(.*)"))    
+async def iq(event):
+    await edit_or_reply(event, """**🚹  ⦑   لأوامر الزخرفة    ⦒  :** \n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n⑴  ⦙ `.غمق + الرد على رساله` \n**✐ :  يحول خط الرسالة غامقه  ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑵  ⦙ `.ينسخ + الرد على رساله` \n**✐ :  يحول خط الرساله الى كلام ينسخ  ❝** \n⑶  ⦙ `.خط سفلي + الرد على رساله` \n**✐ :   يضيف الى خط رساله خط سفلي ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑷  ⦙ `.كتابه + الكلام بالانكلش` \n**✐ : يكتب الكلام على ورقه بخط اليد 100% ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑸  ⦙ `.زخرفه_انكليزي + الاسم` \n**✐ : يزخرف الاسم الانكليزي لعده زخرفات يجب ان يكون الاسم مكتوب سمول ❝**\n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑹ ⦙ `.زخرفه_عربي + الاسم` \n**✐ : يزخرف الاسم العربي لعده زخرفات ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n⑺ ⦙  `.بايوهات1`
+**✐ :  يعطيك بايو انستا متعدده 1 ❝**
 ⑻ ⦙ .بايوهات2
-✐ :  يعطيك بايو انستا متعدده 2 
-———————×———————
+**✐ :  يعطيك بايو انستا متعدده 2 ❝**
 ⑼ ⦙  .رموز1
-✐ :  يعطيك رموز للزخرفه 1 
-———————×———————
+**✐ :  يعطيك رموز للزخرفه 1 ❝**
  10 ⦙ .رموز2
-✐ :  يعطيك رموز للزخرفه2 
-———————×———————
-يوجد شرح مفصل عن اوامر زخرفه هنا : https://t.me/L3LL3/4705
-""")
-
-
+**✐ :  يعطيك رموز للزخرفه2 ❝**
+⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮""")
+@iqthon.on(admin_cmd(pattern="م27(?: |$)(.*)"))    
+async def iq(event):
+    await edit_or_reply(event, "**🚹  ⦑   اوامر التكرار    ⦒  :** \n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n⑴  ⦙ `.تكرار + الكلمة + العدد` \n**✐ :  يرسل الكلمة يكررها على عدد المرات  ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑵  ⦙ `.تكرار حزمه الملصقات + الرد على ملصق` \n**✐ :   يرسل لك جميع ملصقات الموجوده في حزمه لل الملصق الي عملت رد له   ❝** \n⑶  ⦙ `.تكرار_احرف  + الكلمة` \n**✐ :   يكرر الك احرف الكلمة حتى لو جملة ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑷  ⦙ `.تكرار_كلمه  + الجملة` \n**✐ : يكرر الك كلام الجملة ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑸  ⦙ `.مؤقت  + عدد الثواني + عدد مرات + الجملة` \n**✐ : يرسل اليك الجملة كل وقت معين ❝**\n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n")
+@iqthon.on(admin_cmd(pattern="م28(?: |$)(.*)"))    
+async def iq(event):
+    await edit_or_reply(event, "**🚹  ⦑   اوامر الالعاب 4    ⦒  :** \n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n⑴  ⦙ `.شوت + الكلمة` \n**✐ :  امر تسليه جربه وتعرف  ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑵  ⦙ `.كتابه + الكلام بالانكلش` \n**✐ :   يكتب الكلام على ورقه بخط اليد 100%   ❝** \n⑶  ⦙ ** اضـافه العـاب اخـرى فقط قم بنسخ الأمر وارسالـة    :- **\n1. - `.لعبه تيك توك اربعه` \n2. - `.لعبه تيك توك اثنان 3` \n3. - `.لعبه ربط أربعة` \n4. - `.لعبه قرعة` \n5. - `.لعبه حجر-ورقة-مقص` \n6. - `.لعبه روليت` \n7. - `.لعبه داما` \n8. - `.لعبه داما تجمع` \n\n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n")
+@iqthon.on(admin_cmd(pattern="م29(?: |$)(.*)"))    
+async def iq(event):
+    await edit_or_reply(event, "**🚹  ⦑   اوامر الالعاب 5    ⦒  :** \n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n⑴  ⦙ `.هديه + الكلام` \n**✐ :  قم بارسال الامر بجانبه اكتب اي شيئ واول شخص سيفتحها سوف يكتب اسمه جربها  ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑵  ⦙ `.ضفدع + الكلمه` \n**✐ :   يدعم انكليزي فقط + يحول الكلمه لكتابه ضفدع جربه وتفهم   ❝** \n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑶  ⦙ `.لافته + الكلمه` \n**✐ :   يدعم انكليزي فقط + يحول الكلمه بلافته ملصق متحرك جربه وتعرف   ❝** \n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑷  ⦙ `.تكرار_كلمه  + الجملة` \n**✐ : يكرر الك كلام الجملة ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑸  ⦙ `.صفق + الرد على الكلام` \n**✐ : جربه وتعرف مضحك ❝**\n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑹ ⦙ `.حضر وهمي + الرد على شخص` \n**✐ : حظر وهمي جربه وتعرف ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n⑺ ⦙ `.خط ملصق + الكلمه`\n**✐ : يدعم انكليزي فقط + يحول الكتابه لملصق ❝**\n8 ⦙ `.شعر`\n**✐ : يرسل الك شعر ميمز او مضحك ❝**\n")
+@iqthon.on(admin_cmd(pattern="م30(?: |$)(.*)"))    
+async def iq(event):
+    await edit_or_reply(event, """**🚹  ⦑   اوامر الوسائـط و الصور  ⦒  :**
+============================
+⑴ ⦙ `.سمول + الرد على ملصق او صوره او فيديو` 
+**✐  : يقوم بتصغير الوسائط **
+============================
+⑵ ⦙ `.عكس الالوان + الرد على ملصق او صوره او فيديو`
+**✐  : يعكس الالوان الموجودة في الوسائط**
+⑶ ⦙ `.فلتر احمر + الرد على ملصق او صوره او فيديو`
+**✐  : يقوم باضافه فلتر احمر الى وسائط**
+⑷ ⦙ `.فلتر رصاصي + الرد على ملصق او صوره او فيديو`
+**✐  :  يقوم باضافه فلتر رصاصي الى وسائط**
+============================
+⑸ ⦙ `.يمين الصوره + الرد على ملصق او صوره او فيديو )`
+**✐  : يقوم بتحويل وجهه الوسائط الى اليمين**
+⑹ ⦙ `.قلب الصوره + الرد على ملصق او صوره او فيديو`
+**✐  : يقلب الوسائط من فوق لتحت**
+============================
+⑺ ⦙ `.زوم + الرد على ملصق او صوره او فيديو`
+**✐  :  يقوم بتقريب على الوسائط**
+⑻ ⦙ `.اطار + الرد على ملصق او صوره او فيديو`
+**✐  : يضيف اطار الى الوسائط**
+============================
+⑼ ⦙ `.لوقو + الاسم`
+**✐  : يقوم بصنع logo خاص بك**
+============================
+  ⦑   شرح الاوامر : @a_aaaf   ⦒""")
+@iqthon.on(admin_cmd(pattern="م31(?: |$)(.*)"))    
+async def iq(event):
+    await edit_or_reply(event, """**🚹  ⦑   اوامر الملصقات   ⦒  : **
+============================
+ ⑴ ⦙ `.جلب الملصقات + الرد على الملصق`
+**✐  : يجلب اليك ملصقات الحزمه**
+⑵ ⦙  `.انشاء حزمه ملصقات + الرد على الملصق`
+**✐  : يضع الملصق بحزمه بشكل مقصوص**
+⑶ ⦙ .جلب معلومات الملصق + الرد على الملصق )
+**✐  : يجلب لك جميع معلومات الملصق**
+⑷ ⦙ `.ملصق + اسم الحزمه او الملصق`
+**✐  : يبحث عن اسم الحزمه او الملصق ويجلبه اليك**
+============================
+  ⦑   شرح الاوامر : @a_aaaf   ⦒""")
 
 @iqthon.tgbot.on(CallbackQuery(data=re.compile(rb"ordahln1")))
 @check_owner
@@ -893,58 +811,22 @@ async def repoiqthon(iqthon):
     await iqthon.delete()
 @iqthon.on(admin_cmd(pattern="م15(?: |$)(.*)"))    
 async def iq(event):
-    await edit_or_reply(event, 
-"""**⦑   اوامر الوسائـط   ⦒  :**
-———————×———————
-⑴ ⦙ .سمول + الرد على ملصق او صوره او فيديو 
-✐  : يقوم بتصغير الوسائط 
-———————×———————
-⑵ ⦙ .عكس الالوان + الرد على ملصق او صوره او فيديو
-✐  : يعكس الالوان الموجودة في الوسائط
-———————×———————
-⑶ ⦙ .فلتر احمر + الرد على ملصق او صوره او فيديو
-✐  : يقوم باضافه فلتر احمر الى وسائط
-———————×———————
-⑷ ⦙ .فلتر رصاصي + الرد على ملصق او صوره او فيديو
-✐  :  يقوم باضافه فلتر رصاصي الى وسائط
-———————×———————
-⑸ ⦙ .يمين الصوره + الرد على ملصق او صوره او فيديو )
-✐  : يقوم بتحويل وجهه الوسائط الى اليمين
-———————×———————
-⑹ ⦙ .قلب الصوره + الرد على ملصق او صوره او فيديو
-✐  : يقلب الوسائط من فوق لتحت
-———————×———————
-⑺ ⦙ .زوم + الرد على ملصق او صوره او فيديو
-✐  :  يقوم بتقريب على الوسائط
-———————×———————
-⑻ ⦙ .اطار + الرد على ملصق او صوره او فيديو
-✐  : يضيف اطار الى الوسائط
-———————×———————
-⑼ ⦙ .لوقو + الاسم
-✐  : يقوم بصنع logo خاص بك
-———————×———————
-  ⦑   شرح اوامر الوسائط هنا :  https://t.me/L3LL3/4721  ⦒
-""")
+    await edit_or_reply(event, "**🚹  ⦑   اوامر التنزيلات والبحث الاغاني    ⦒  :**\n\n⑴  ⦙ `.بحث صوت + اسم الاغنيه`\n**✐ : سيحمل لك الاغنية صوت ايضا يمكنك وضع رابط الاغنيه بدل الاسم ❝**\n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑵  ⦙ `.بحث فيديو + اسم الاغنيه` \n**✐ : سيحمل لك الاغنية  فيديو ايضا يمكنك وضع رابط الاغنيه بدل الاسم ❝**\n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n ⑶  ⦙ `.معلومات الاغنيه` \n**✐ : الرد ع الاغنيه سيجلب لك معلوماتها واسم الفنان ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n \n⑷  ⦙ `.كوكل بحث + موضوع البحث`\n**✐ : يجلب لك معلومات الموضوع من كوكل ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑸  ⦙ `.تخزين الصوت + الرد ع البصمه`\n**✐ : تخزين الصوت من اجل استخدامه لوضع صوت في الفيديو ❝**\n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑹ ⦙ `.اضف الصوت + الرد ع الصوره او متحركه او فيديو`\n**✐ : يتم اضافه الصوت الى الفيديو او المتحركه او الصوره ❝**\n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑺ ⦙ `.اسم الاغنيه + الرد ع الاغنيه`\n**✐ : ييجلب لك اسم الاغنيه مدة البصمه 10 الى 5 ثواني ❝**\n⑻ ⦙ `تيك توك + الرد ع رابط الفيديو.`\n**✐ : يحمل فيديو تيك توك بدون العلامه المائيه** ❝\n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n")
 @iqthon.on(admin_cmd(pattern="م16(?: |$)(.*)"))    
 async def iq(event):
-    await edit_or_reply(event, 
-"""** ⦑   اوامر الملصقات   ⦒  : **
-———————×———————
- ⑴ ⦙ .جلب الملصقات + الرد على الملصق
-✐  : يجلب اليك ملصقات الحزمه
-———————×———————
-⑵ ⦙  .انشاء حزمه ملصقات + الرد على الملصق
-✐  : يضع الملصق بحزمه بشكل مقصوص
-———————×———————
-⑶ ⦙ .جلب معلومات الملصق + الرد على الملصق )
-✐  : يجلب لك جميع معلومات الملصق
-———————×———————
-⑷ ⦙ .ملصق + اسم الحزمه او الملصق
-✐  : يبحث عن اسم الحزمه او الملصق ويجلبه اليك
-———————×———————
-  ⦑   شرح اوامر الملصقات هنا  :  https://t.me/L3LL3/4720  ⦒
-""")
-
+    await edit_or_reply(event, "**🚹  ⦑  اوامر الكروب 1     ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑴  ⦙ `.كتم + الرد ع الشخص`\n**✐ : يكتم الشخص من الخاص او الكروبات فقط اذا كانت عندك صلاحيه حذف رسائل ❝**\n \n⑵  ⦙ `. الغاء كتم + الرد ع الشخص`\n**✐ :  يجلب لك جميع معرفات المشرفين في الكروب  ❝**\n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑶  ⦙ `.البوتات`\n**✐ : يجلب لك جميع معرفات البوتات في الكروب ❝**\n \n⑷  ⦙ `.الأعضاء`\n**✐ : اضهار قائمة الاعضاء للكروب اذا هواي سيرسل ملف كامل لمعلوماتهم  ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑸  ⦙ `.معلومات`\n**✐ : سيرسل لك جميع معلومات الكروب بالتفصيل ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑹ ⦙ `.مسح المحظورين`\n**✐ : يمسح جميع المحظورين في الكروب ❝**\n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑺ ⦙ `.المحذوفين`\n**✐ : يجلب لك جميع الحسابات المحذوفه ❝**\n\n⑻ ⦙ `.المحذوفين تنظيف`\n**✐ : يمسح جميع الحسابات المحذوفه في الكروب ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑼ ⦙ `.احصائيات الاعضاء`\n**✐ : يمسح جميع المحظورين في الكروب ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑽ ⦙ `.انتحال + الرد ع الشخص`\n**✐ : يقوم بأنتحال الشخص ويضع صورته ونبذته واسمه في حسابك عدا المعرف ❝**\n\n⑾ ⦙ `.الغاء الانتحال + الرد ع الشخص`\n**✐ : يقوم بألغاء الانتحال وسيرجع معلومات المذكوره بالسورس ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n\n")
+@iqthon.on(admin_cmd(pattern="م17(?: |$)(.*)"))    
+async def iq(event):
+    await edit_or_reply(event, "**🚹  ⦑   اوامر الكروب 2   ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑴  ⦙  `.ترحيب + الرساله` \n**✐ : يضيف ترحيب في الكروب اي شخص ينضم راح يرحب بي  ❝**\n⑵  ⦙   `.مسح الترحيبات` \n**✐ :  ييقوم بمسح الترحيب من الكروب ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n\n  ⦙  `.ترحيباتي` \n**✐ :  يضهر لك جميع الترحيبات التي وضعتها في الكروب ❝**\n⑷  ⦙ `.رساله الترحيب السابقه تشغيل`  \n**✐ :  عندما يحدث تكرار سيحذف رساله الترحيب ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑸  ⦙  `.رساله الترحيب السابقه ايقاف`\n**✐ :  عندما يحدث تكرار لا يحذف رساله الترحيب ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑹ ⦙  `.اضف رد + الكلمه` \n**✐ :  مثلاً تدز رساله هلو تسوي عليها رد بهلوات ❝**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑺ ⦙ `.مسح رد + الكلمه` \n**✐ :  سيحذف الكلمه الي انت ضفتها ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n\n⑻ ⦙  `.جميع الردود` \n **✐ :  يجلب لك جميع الردود الذي قمت بأضافتها  ❝**\n⑼ ⦙  `.مسح جميع الردود` \n**✐ :  يمسح جميع الردود الي انت ضفتها ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑽ ⦙  `.صنع مجموعه + اسم المجموعه`\n**✐ : يقوم بعمل مجموعه خارقه ❝**\n \n⑾ ⦙  `.صنع قناه +  اسم القناة`\n**✐ : يقوم بعمل قناه خاصه  ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑿ ⦙ `.عدد رسائلي`\n**✐ : سيظهر لك عدد رسائلك في الكروب ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n\n")
+@iqthon.on(admin_cmd(pattern="م18(?: |$)(.*)"))    
+async def iq(event):
+    await edit_or_reply(event, "**🚹  ⦑   اوامر الكروب 3   ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑴  ⦙  `.تفعيل حمايه المجموعه`\n**✐ : يقوم غلق جميع صلاحيات المجموعه يبقي فقط ارسال  الرسائل❝**\n \n⑵  ⦙ `تعطيل حمايه المجموعه`\n**✐ :  يقوم بتشغيل جميع صلاحيات المجموعة ماعدا تغير المعلومات و التثبيت و اضافه اعضاء تبقى مسدوده❝**\n\n⑶  ⦙ `.صلاحيات المجموعه`\n**✐ : يقوم بعرض صلاحيات المجموعه المغلقه والمفتوحه❝**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n⑷  ⦙  `.رفع مشرف + الرد على شخص`\n**✐ : يرفع الشخص مشرف يعطي صلاحيه حذف رسائل والتثبيت فقط❝**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑸  ⦙ `.منع + كلمة`\n**✐ : منع كلمه من الارسال في الكروب**❝\n⑹ ⦙ `.الغاء منع + كلمه`\n**✐ : يقوم بالغاء منع الكلمه ❝** \n⑺ ⦙ `.قائمه المنع`\n**✐ : يقوم بجلب جميع الكلمات الممنوعه في الكروب ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑻ ⦙ ` .تاك + ( الاعداد المحدده وثابتة فقط) ⤵️`\n  ( 10 - 50 - 100 - 200  )\n**✐ : يجلب لك الاعضاء بالروابط بالعدد المحدد ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑼ ⦙ `.معرفات + ( الاعداد المحدده وثابتة فقط) ⤵️`\n  ( 10 - 50 - 100 - 200  )\n**✐ :جلب لك معرفات الاعضاء بالعدد المحدد ❝**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n")
+@iqthon.on(admin_cmd(pattern="م19(?: |$)(.*)"))    
+async def iq(event):
+    await edit_or_reply(event, "**🚹  ⦑  اوامر الكروب 4     ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑴  ⦙ `.تنظيف الوسائط` \n ✐: ينضف جميع ميديا من صور وفديوهات و متحركات** او ( `.تنظيف الوسائط + العدد`) ** \n⑵  ⦙ `.حذف الرسائل`\n**✐ :  يحذف جميع الرسائل بلكروب ** \n ` او  `.حذف الرسائل + العدد \n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑶  ⦙ `.مسح + الرد على رسالة`\n**✐ :  يحذف الرساله الي راد عليها فقط **\n⑷  ⦙ `.غادر + بلكروب دزها`\n**✐ :  يغادر من المجموعه او من القناة**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑸  ⦙ ` .تفليش`\n**✐ :  يطرد جميع الي بلكروب الامر صار احسن ومتطور واسرع**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑹  ⦙ `.اضافه + رابط الكروب `\n**✐ :  يضيفلك جميع الاعضاء الي برابط الكروب يضيفهم بكروبك ( يجب ان تتاكد انو مامحضور حسابك ارسل ⬅️( .فحص الحظر ) علمود تتاكد حسابك محظور او لا) \n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑺  ⦙ `.جلب الوقتيه + الرد على الصورة`\n**✐ :  الرد على صوره سريه وقتيه سوف يتم تحويلها الى رسائل المحفوضه كصورة عادية\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑻  ⦙ `.تاك بالكلام + الكلمه + معرف الشخص`\n**✐ :  يسوي تاك للشخص بالرابط جربه وتعرف**\n⑼  ⦙ `.نسخ + الرد على رساله`\n**✐ :  يرسل الرساله التي رديت عليها **\n⑽  ⦙ `.ابلاغ الادمنيه`\n**✐ :  يسوي تاك لجميع الادمنيه ارسله هذا الامر بلمجموعه في حاله اكو تفليش او مشكلة**\n⑾  ⦙ `.المشرفين` \n**✐ : يجيب الك جميع المشرفين في المجموعه او القناه**\n⑿  ⦙ `.البوتات` \n**✐ :  يجيب الك جميع بوتات في المجموعه او قناه**")
+@iqthon.on(admin_cmd(pattern="م20(?: |$)(.*)"))    
+async def iq(event):
+    await edit_or_reply(event, "**🚹  ⦑  اوامر الكروب 5     ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑴  ⦙ `.تحذير التكرار + عدد رسائل`\n**✐ :  اي شخص بلكروب يكرر رسائل مالته بلعدد المحدد يقيدة مهما كان رتبته**\n ⑵  ⦙ ` .تحذير تكرار 99999 `\n✐ :  هذا الامر ستعمله من تريد تلغي التحذير لان مستحيل احد يكرر هل عدد ف اعتبار ينل(غي التحذير**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑶  ⦙ ` .حظر + الرد على شخص`\n✐ : حظر الشخص من المجموعه او الكروب**\n ⑷  ⦙ ` .الغاء الحظر + الرد على شخص`\n✐ :  يلغي حظر الشخص من المجموعه او الكروب**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑸  ⦙ ` .بدء مكالمه `\n✐ :  يقوم بتشغيل مكالمه في المجموعه**\n ⑹  ⦙ `.دعوه للمكالمه`\n✐ : يتم دعوه الاعضاء للمكالمة الشغاله**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑺  ⦙ ` .تنزيل مشرف + الرد على شخص`\n✐ :  يقوم بازاله الشخص من الاشراف **\n ⑻  ⦙ ` .تثبيت + الرد على رساله`\n✐ : شرح : تثبيت الرساله التي رديت عليها**⒀  ⦙ `.الأعضاء`\n**✐ :  اضهار قائمة الاعضاء للمجموعة اذا هواي يرسلك ملف كامل لمعلوماتهم**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⒁  ⦙ `.تفليش `\n**✐ :  يقوم بأزاله جميع اعضاء المجموعه او القناة الى 0**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⒂  ⦙ `.مسح المحظورين`\n**✐ :  يمسح جميع المحظورين في المجموعه او القناه **\n⒃  ⦙ `.المحذوفين`\n**✐:  يجلب لك جميع الحسابات المحذوفه في المجموعه او القناه**\n⒄  ⦙ `.المحذوفين تنظيف`\n**✐ :  مسح جميع الحسابات المحذوفه في المجموعه او القناة**\n⒅  ⦙ `.احصائيات الاعضاء`\n**✐ :  يرسل اليك جميع معلومات اعضاء المجموعه منها عدد الحسابات المحذوفه او الحسابات النشطه او الحسابات اخر ضهور وجميعهم**\n⒆  ⦙ `.عدد رسائلي`\n**✐ : يقوم بحساب عدد رسائلك في المجموعه او القناة**\n⒇  ⦙ `.جلب الاحداث`\n**✐ :  يرسل اليك اخر 20 رساله محذوفه في المجموعة من الاحداث**")
 @iqthon.tgbot.on(CallbackQuery(data=re.compile(rb"ordSONG")))
 @check_owner
 async def inlineiqthon(iqthon):
@@ -953,686 +835,32 @@ async def inlineiqthon(iqthon):
     await iqthon.edit(text, buttons=buttons)
 @iqthon.on(admin_cmd(pattern="م1(?: |$)(.*)"))    
 async def iq(event):
-    await edit_or_reply(event, 
-""" ** ⦑   اوامر السورس   ⦒  :**
-———————×———————
-الأمر ⦙ ( .السورس )
-الشرح  : يضهر لك معلومات السورس ومدة تنصيبك او امر .فحص ❝
-———————×——————— 
-الأمر ⦙ ( .رابط التنصيب )
-الشرح  : سوف يعطيك رابط التنصيب ❝ 
-———————×——————— 
-الأمر ⦙ ( .حساب كيثاب + اسم الحساب )
-الشرح  : ينطيك معلومات الحساب وسورساته بموقع جيت هوب ❝ 
-———————×——————— 
-الأمر ⦙ ( .المده )
-الشرح  : يضهر لك مدة تشغيل بوت تليثون لديك 
-———————×———————
-الأمر ⦙ ( .تحميل ملف + الرد ع الملف )
-الشرح : يحمل ملفات تليثون 
-———————×———————
-الأمر ⦙ ( .مسح ملف + الرد ع الملف )
-الشرح :  يمسح الملف الي حملته  
-———————×———————
-الأمر ⦙ ( .تحديث )
-الشرح :  امر لأعاده التشغيل وتحديث ملفات السورس وتسريع التليثون 
-———————×———————
-الأمر ⦙ ( .اطفاء مؤقت + عدد الثواني )
-الشرح : يقوم بأطفاء التليثون بعدد الثواني الي ضفتها  عندما تخلص الثواني سيتم اعاده تشغيل التليثون 
-———————×———————
-الأمر ⦙ ( .الاوامر ) 
-الشرح :   لأضهار جميع اوامر السورس اونلاين
-———————×———————
-الأمر ⦙ ( .اوامري )
-الشرح :   لأضهار جميع اوامر السورس كتابه بدون اونلاين
-———————×———————
-الأمر ⦙ ( .استخدامي )
-الشرح :   يضهر لك كمية استخدامك لتليثون
-———————×———————
-الأمر ⦙ ( .تاريخ التنصيب )
-الشرح :   يضهر لك تاريخ تنصيبك
-———————×———————
-شرح الأوامر : ( @L3LL3 ) .
-قناه السورس : ( @IQTHON ) .
-جميع الاوامر تكون بدايتها نقطة .""")
-
+    await edit_or_reply(event, "**🚹  ⦑   اوامر الحساب 1   ⦒  :** \n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n ⑴  ⦙ `.معرفه + الرد ع الشخص` \n**✐ : سيجلب لك معرف الشخص ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑵  ⦙ `.سجل الاسماء + الرد ع الشخص` \n**✐ : يجلب لك اسماء الشخص القديمه ❝** \n ⑶  ⦙ `.انشاء بريد` \n**✐ : ينشئ لك بريد وهمي مع رابط رسائل التي تأتي الى البريد ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑷  ⦙ `.ايدي + الرد ع الشخص` \n**✐ : سيعطيك معلومات الشخص ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑸  ⦙ `. الايدي الرد ع الشخص` \n**✐ : سوف يعطيك ايدي المجموعه او ايدي حسابك ❝**\n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑹ ⦙ `.معلومات تخزين المجموعه` \n**✐ : يجلب لك جميع معلومات الوسائط والمساحه وعدد ملصقات وعدد تخزين ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n⑺ ⦙ `.تخزين الخاص تشغيل`\n**✐ : يجلب لك جميع الرسائل التي تأتي اليك في الخاص ❝**\n⑻ ⦙ . تخزين الخاص ايقاف \n✐ : يوقف ارسال جميع الرسائل التي تأتي اليك في الخاص ❝\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n⑼ ⦙ .تخزين الكروبات تشغيل\n✐ : يرسل لك جميع الرسائل التي يتم رد عليها في رسالتك في الكروبات ❝\n⑽ ⦙ .تخزين الكروبات ايقاف\n✐ : يوقف لك جميع ارسال الرسائل التي يتم رد عليها ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n\n")
 @iqthon.on(admin_cmd(pattern="م2(?: |$)(.*)"))    
 async def iq(event):
-    await edit_or_reply(event,
-"""**  ⦑   اوامـر الحـسـاب  ⦒ : **
-———————×———————
-الأمر︙( .معرفه + الرد ع الشخص )
-شرح︙سيجلب لك معرف الشخص 
-———————×———————
-الأمر︙( .سجل الاسماء + الرد ع الشخص ) 
-شرح︙يجلب لك اسماء الشخص القديمه 
-———————×———————
-الأمر︙( .انشاء بريد )
-شرح︙ينشئ لك بريد وهمي 
-———————×———————
-الأمر︙( .ايدي + الرد ع الشخص )
-شرح︙سيعطيك معلومات الشخص 
-———————×———————
-الأمر︙( . الايدي الرد ع الشخص )
-شرح︙سوف يعطيك ايدي المجموعه او ايدي حسابك 
-———————×———————
-الأمر︙( .معلومات تخزين المجموعه )
-شرح︙يجلب لك جميع معلومات الوسائط  
-———————×———————
-الأمر︙( .تخزين الخاص تشغيل )
-شرح︙يخزن لك جميع الرسائل التي  في الخاص 
-———————×———————
-الأمر︙( .تخزين الخاص ايقاف )
-شرح︙يوقف  تخزين الرسائل اليك في الخاص 
-———————×———————
-الأمر︙( .تخزين الكروبات تشغيل )
-شرح︙يخزم جميع الرسائل التي يتم رد عليك 
-———————×———————
-الأمر︙( .تخزين الكروبات ايقاف )
-شرح︙يوقف لك جميع تخزين رسائل
-———————×———————
- الأمر  ︙( .صورته + الرد ع الشخص )
-شرح︙يجلب صوره الشخص
-———×———
-الأمر︙( .رابطه + الرد ع الشخص )
-شرح︙يجلب لك رابط الشخص
-———×———
-الأمر︙( .اسمه + الرد ع الشخص )
-شرح︙يجلب لك اسم الشخص الذي تم رد عليه 
-———×———
-الأمر︙( .نسخ + الرد ع الرساله )
-شرح︙يرسل الرساله التي تم رد عليها 
-———×———
-الأمر︙( .كورونا + اسم المدينه )
-شرح︙يجلب لك مرض كورونا و معلومات
-———×———
-الأمر︙( .الاذان + اسم المدينه )
-شرح︙يجلب لك معلومات الاذان 
-———×———
-الأمر︙( .رابط تطبيق + اسم التطبيق )
-شرح︙يرسل رابط التطبيق مع معلوماته 
-———×———
-الأمر︙( .تاريخ الرساله + الرد ع الرساله )
-شرح︙يجلب لك تاريخ الرساله بالتفصيل 
-———×———
-الأمر︙( .بنك )
-شرح︙يقيس سرعه استجابه 
-———×———
-الأمر︙( .سرعه الانترنيت )
-شرح︙يجلب لك سرعه الانترنيت لديك 
-———×———
-الأمر︙( .الوقت )
-شرح︙يضهر لك الوقت والتاريخ 
-———×———
-الأمر︙( .وقتي )
-شرح︙الوقت والتاريخ شكل اخر
-———×———
-الأمر︙.حالتي 
-✐  :  لفحص الحظر
-———×———
-الأمر︙.طقس + اسم المدينه 
-شرح︙ يعطي لك طقس المدينه 
-———×———
-الأمر︙ .طقوس + اسم المدينه 
-شرح︙ يعطي لك طقس المدينه 
-———×———
-الأمر︙ .مدينه الطقس + اسم المدينه 
-شرح︙ لتحديد طقس المدينه تلقائي
-———×———
-الأمر︙ .ازاله التوجيه + الرد على رساله
-شرح︙ يرسل اليك الرساله بدون توجية
-———×———
-الأمر︙.كشف + الرد على شخص
-شرح︙ رد على شخص يفحص الحظر
-———×———
-الأمر︙.وضع بايو + الرد على البايو
-شرح︙ يضع الكلمه في البايو الخاص بك
-———×———
-الأمر︙.وضع اسم + الرد على الاسم
-شرح︙ يضع الاسم في اسمك
-———×———
-الأمر︙.وضع صوره + الرد على صوره
-شرح︙يضع الصوره في حسابك
-———×———
-الأمر︙.معرفاتي
-شرح︙يجلب جميع معرفاتك
-———×———
-الأمر︙ .تحويل ملكية + معرف الشخص
-شرح︙يحول ملكيه القناه او المجموعه 
-———×———
-الأمر︙ .انتحال + الرد على الشخص
-شرح︙ ينتحل الشخص ويضع صورته و نبذته و اسمه في حسابك
-———×———
-الأمر︙.الغاء الانتحال + الرد على الشخص
-شرح︙ يقوم بالغاء الانتحال 
-———×———
-الأمر︙.ازعاج + الرد على شخص
-شرح︙يقوم بتكرار الرسائل الشخص 
-———×———
-الأمر︙.الغاء الازعاج
-شرح : يوقف جميع الازعاجات في المجموعه 
- ———×———
- الأمر︙.المزعجهم
-شرح︙ يضهر اليك جميع الذين مفعل عليهم الازعاج 
-———×———
-الأمر︙( .الحماية تشغيل )
-شرح︙ يقوم بتشغيل رساله الحمايه اي شخص يراسلك سوف يقوم بتنبيه
-———×———
-الأمر︙( .الحماية ايقاف )
-شرح︙يقوم بتعطيل رساله الحماية الخاص
-———×———
-الأمر︙( .قبول )
-شرح︙ يقوم بقبول الشخص للأرسال اليك
-———×———
-الأمر︙( .رفض )
-شرح︙الغاء قبول الشخص من الارسال 
-———×———
-الأمر︙( .مرفوض )
-شرح︙حظر الشخص 
-———×———
-الأمر︙( .المقبولين )
-شرح︙عرض قائمة المقبولين ي الحماية 
-———×———
-الأمر︙( .جلب الوقتيه + الرد على الصورة )
-شرح︙حفض صوره وقتيه في الحافضة 
-———×———
-الأمر︙( .تاك بالكلام + الكلمه + معرف الشخص )
-شرح︙ يسوي تاك للشخص بالرابط جربه وتعرف 
-———×———
-الأمر︙( .نسخ + الرد على رساله )
-شرح︙ يرسل الرساله التي رديت عليها
-———×———
-الأمر︙.احسب + المعادله
-شرح︙يجمع او يطرح او يقسم
-———×———
-الأمر  ⦙  ( .كول + الكلمة )
-الشرح : يجب اضافه بوتك يتكلم بدلا عنك 
-———×———
-الأمر  ⦙ ( .وضع النائم + السبب )
-الشرح : اي شخص يعملك تاك او يراسلك او يرد عليك يرد عليه تليثون بكليشة انا حاليا غير موجود ويضع له السبب الي نتة وضعته
-———×———
-الأمر  ⦙  .الصور + الرد على الشخص 
-الشرح : يجلب لك جميع صور الشخص و يمكن وضع رقم بجانب الأمر
-———×———
-الأمر  ⦙  .زاجل + معرف الشخص + الرساله 
-الشرح : يرسل الرساله الى الشخص 
-———×———
-الأمر ⦙ .فيديو
-الشرح  : يرسل فيديو عشوائي
-———×———
-الأمر  ⦙ .فيديو2
-الشرح :  يرسل فيديو عشوائي
-———×———
-الأمر ⦙ .فايروس
-الشرح :  يرسل فايروس
-———×———
-شرح الأوامر : ( @L3LL3 ) .
-قناه السورس : ( @IQTHON ) .
-جميع الاوامر تكون بدايتها نقطة .
-""")
-
+    await edit_or_reply(event,"**🚹  ⦑   اوامر الحساب 2   ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n ⑴  ⦙  `.صورته + الرد ع الشخص`\n**✐ : يجلب صوره الشخص الذي تم رد عليه ❝**\n \n⑵  ⦙ `.رابطه + الرد ع الشخص`\n**✐ :  يجلب لك رابط الشخص الذي تم رد عليه  ❝**\n\n⑶  ⦙ `.اسمه + الرد ع الشخص`\n**✐ : يجلب لك اسم الشخص الذي تم رد عليه ❝**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n⑷  ⦙  `.نسخ + الرد ع الرساله`\n**✐ : يرسل الرساله التي تم رد عليها ❝**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑸  ⦙ `.كورونا + اسم المدينه`\n**✐ : يجلب لك مرض كورونا وعدد الموتى والمصابين**❝\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑹ ⦙ `.الاذان +اسم المدينه`\n**✐ : يجلب لك معلومات الاذان في هذهّ المدينه بجميع الاوقات ❝**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑺ ⦙ `.رابط تطبيق + اسم التطبيق`\n**✐ : يرسل لك رابط التطبيق مع معلوماته ❝**\n\n⑻ ⦙ `.تاريخ الرساله + الرد ع الرساله`\n**✐ : يجلب لك تاريخ الرساله بالتفصيل ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑼ ⦙ `.بنك`\n**✐ : يقيس سرعه استجابه لدى تنصيبك ❝**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑽ ⦙ `.سرعه الانترنيت`\n**✐ : يجلب لك سرعه الانترنيت لديك ❝**\n\n⑾ ⦙ `.الوقت`\n**✐ : يضهر لك الوقت والتاريخ واليوم ❝**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑿ ⦙  `.وقتي`\n**✐ : يضهر لك الوقت والتاريخ بشكل جديد ❝**\n")
 @iqthon.on(admin_cmd(pattern="م3(?: |$)(.*)"))    
 async def iq(event):
-    await edit_or_reply(event, 
-"""**  ⦑  اوامر الكروب 1  ⦒  :**
-
-———————×——————— 
- الأمر  ⦙  ( .كتم + الرد ع الشخص )
-الشرح  ⦙ يكتم الشخص من الخاص او الكروبات فقط اذا كانت عندك صلاحيه حذف رسائل 
-الأمر  ⦙  ( . الغاء كتم + الرد ع الشخص )
-الشرح  ⦙ يجلب لك جميع معرفات المشرفين في الكروب  
- ———————×——————— 
-الأمر ⦙  ( .البوتات )
-الشرح  ⦙ يجلب لك جميع معرفات البوتات في الكروب 
-الأمر ⦙  ( .الأعضاء )
-الشرح  ⦙ اضهار قائمة الاعضاء للكروب اذا هواي سيرسل ملف كامل لمعلوماتهم  
-———————×——————— 
-الأمر ⦙  ( .معلومات )
-الشرح  ⦙ سيرسل لك جميع معلومات الكروب بالتفصيل  
-الأمر ⦙  ( .مسح المحظورين )
-الشرح  ⦙ يمسح جميع المحظورين في الكروب 
- ———————×——————— 
-الأمر ⦙  ( .المحذوفين )
-الشرح  ⦙ يجلب لك جميع الحسابات المحذوفه 
-الأمر ⦙  ( .المحذوفين تنظيف )
-الشرح  ⦙ يمسح جميع الحسابات المحذوفه في الكروب 
-———————×——————— 
-الأمر ⦙  ( .احصائيات الاعضاء )
-الشرح  ⦙ يمسح جميع المحظورين في الكروب 
-———————×——————— 
-الأمر ⦙  ( .انتحال + الرد ع الشخص )
-الشرح  ⦙ يقوم بأنتحال الشخص ويضع صورته ونبذته واسمه في حسابك عدا المعرف  
-الأمر ⦙  ( .الغاء الانتحال + الرد ع الشخص )
-الشرح  ⦙ يقوم بألغاء الانتحال وسيرجع معلومات المذكوره بالسورس 
-———————×———————
-الأمر  ⦙  ( .ترحيب + الرساله )
-الشرح  ⦙ يضيف ترحيب في الكروب اي شخص ينضم راح يرحب بي  
-الأمر  ⦙   ( .مسح الترحيبات )
-الشرح  ⦙ ييقوم بمسح الترحيب من الكروب 
-———————×——————— 
-الأمر  ⦙  ( .ترحيباتي )
-الشرح  ⦙ يضهر لك جميع الترحيبات التي وضعتها في الكروب 
-———————×——————— 
-الأمر  ⦙  ( .رساله الترحيب السابقه تشغيل ) 
-الشرح  ⦙ عندما يحدث تكرار سيحذف رساله الترحيب 
-الأمر  ⦙  ( .رساله الترحيب السابقه ايقاف )
-الشرح  ⦙ عندما يحدث تكرار لا يحذف رساله الترحيب 
-———————×——————— 
-الأمر ⦙  ( .اضف رد + الكلمه )
-الشرح  ⦙ مثلاً تدز رساله هلو تسوي عليها رد بهلوات 
-الأمر ⦙  ( .مسح رد + الكلمه )
-الشرح  ⦙ سيحذف الكلمه الي انت ضفتها 
-الأمر ⦙  ( .جميع الردود )
- الشرح  ⦙ يجلب لك جميع الردود الذي قمت بأضافتها  
-الأمر ⦙  ( .مسح جميع الردود )
-الشرح  ⦙ يمسح جميع الردود الي انت ضفتها 
-———————×——————— 
-الأمر ⦙  ( .صنع مجموعه + اسم المجموعه )
-الشرح  ⦙ يقوم بعمل مجموعه خارقه 
-الأمر ⦙  ( .صنع قناه +  اسم القناة )
-الشرح  ⦙ يقوم بعمل قناه خاصه  
-———————×——————— 
-الأمر ⦙  ( .عدد رسائلي )
-الشرح  ⦙ سيظهر لك عدد رسائلك في الكروب 
-———————×———————
-الأمر  ⦙  ( .تفعيل حمايه المجموعه )
-الشرح  ⦙ يقوم غلق جميع صلاحيات المجموعه يبقي فقط ارسال  الرسائل
-الأمر  ⦙ تعطيل حمايه المجموعه
-الشرح  ⦙ يقوم بتشغيل جميع صلاحيات المجموعة ماعدا تغير المعلومات و التثبيت و اضافه اعضاء تبقى مسدوده
-———————×——————— 
-الأمر  ⦙  ( .صلاحيات المجموعه )
-الشرح  ⦙ يقوم بعرض صلاحيات المجموعه المغلقه والمفتوحه
-———————×———————
-الأمر  ⦙  ( .رفع مشرف + الرد على شخص )
-الشرح  ⦙ يرفع الشخص مشرف يعطي صلاحيه حذف رسائل والتثبيت فقط
-———————×——————— 
-الأمر  ⦙  ( .منع + كلمة )
-الشرح  ⦙ منع كلمه من الارسال في الكروب
-الأمر ⦙  ( .الغاء منع + كلمه )
-الشرح  ⦙ يقوم بالغاء منع الكلمه  
-———————×——————— 
-الأمر ⦙  ( .قائمه المنع )
-الشرح  ⦙ يقوم بجلب جميع الكلمات الممنوعه في الكروب 
-———————×——————— 
-الأمر ⦙  ( .تاك + ( الاعداد المحدده وثابتة فقط) ⤵️
-  ( 10 - 50 - 100 - 200  )
-الشرح  ⦙ يجلب لك الاعضاء بالروابط بالعدد المحدد 
-———————×——————— 
-الأمر ⦙  ( .معرفات + ( الاعداد المحدده وثابتة فقط) ⤵️
-  ( 10 - 50 - 100 - 200  )
-الشرح  ⦙ جلب لك معرفات الاعضاء بالعدد المحدد 
-———————×———————
-الأمر  ⦙  ( .تنظيف الوسائط )
- الشرح  ⦙ ينضف جميع ميديا من صور وفديوهات و متحركات او ( .تنظيف الوسائط + العدد)  
-———————×——————— 
-الأمر  ⦙  ( .حذف الرسائل )
-الشرح  ⦙ يحذف جميع الرسائل بلكروب  
-  او  .حذف الرسائل + العدد 
-———————×——————— 
-الأمر  ⦙  ( .مسح + الرد على رسالة )
-الشرح  ⦙ يحذف الرساله الي راد عليها فقط 
-———————×——————— 
-الأمر  ⦙  ( .غادر )
-الشرح  ⦙ يغادر من المجموعه او من القناة
-———————×——————— 
-الأمر  ⦙  ( .تفليش )
-الشرح  ⦙ يطرد جميع الي في الكروب او قناة 
-———————×——————— 
-الأمر ⦙  ( .اضافه + رابط الكروب )
-الشرح  ⦙ يضف اليك جميع الاعضاء الى الكروب 
- ( يجب ان تتاكد انك  لست محضور ارسل ⬅️
-( .فحص الحظر ) من اجل التاكد
-———————×——————— 
-الأمر ⦙  ( .جلب الوقتيه + الرد على الصورة )
-الشرح  ⦙ الرد على صوره سريه وقتيه سوف يتم تحويلها الى رسائل المحفوضه كصورة عادية
-———————×——————— 
-شرح الأوامر : ( @L3LL3 ) .
-قناه السورس : ( @IQTHON ) .
-جميع الاوامر تكون بدايتها نقطة .""")
+    await edit_or_reply(event, "**🚹  ⦑  اوامر الحساب  3     ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n\n⑴ ⦙ `.حالتي `\n**✐  :  لفحص الحظر**\n⑵  ⦙ `.طقس + اسم المدينه `\n**✐ : يعطي لك طقس المدينه **\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n⑶  ⦙  `.طقوس + اسم المدينه `\n**✐ : يعطي لك طقس المدينه ل 3 ايام قادمه **\n⑷  ⦙  `.مدينه الطقس + اسم المدينه `\n**✐ : لتحديد طقس المدينه تلقائي عند ارسال الأمر **\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n⑸  ⦙  `.ازاله التوجيه + الرد على رساله`\n**✐ : يرسل اليك الرساله التي تم رد عليها بدون توجيه حتى لو بصمه او صوره يقوم بالغاء التوجيه الخاص بها**\n⑹  ⦙ `.كشف + الرد على شخص`\n**✐ : رد على شخص يفحص حضر مستخدم**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n⑺ ⦙ `.وضع بايو + الرد على البايو`\n**✐ : يضع الكلمه التي تم رد عليها في البايو الخاص بك**\n⑻  ⦙ `.وضع اسم + الرد على الاسم`\n**✐ :  يضع الاسم الذي تم رد عليه في اسمك**\n⑼  ⦙ `.وضع صوره + الرد على صوره`\n**✐ :  يضع الصوره التي تم رد عليها في حسابك**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n⑽ ⦙ `.معرفاتي`\n** ✐ : يجلب جميع المعرفات المحجوزه  في حسابك **\n⑾ ⦙  `.تحويل ملكية + معرف الشخص`\n**✐ : يحول ملكيه القناه او المجموعه الى معرف**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n⑿ ⦙  `.انتحال + الرد على الشخص`\n**✐ :  ينتحل الشخص ويضع صورته و نبذته و اسمه في حسابك ( المعرف الخاص بك لايتغير ) **\n⒀ ⦙ `.الغاء الانتحال + الرد على الشخص`\n**✐ : يقوم بالغاء الانتحال ويرجع معلومات  المذكوره بالسورس **\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n⒁  ⦙ `.ازعاج + الرد على شخص`\n**✐ :  يقوم بتكرار الرسائل للشخص المحدد من دون توقف اي شي يتكلمه حسابك همين يدزه**\n⒂ ⦙ `.الغاء الازعاج`\nشرح :  يوقف جميع الازعاجات في المجموعه \n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n ⒃  ⦙ `.المزعجهم`\n**✐ : يضهر اليك جميع الاشخاص الي بل مجموعه مفعل عليهم ازعاج وتكرر رسايلهم**\n\n")
 @iqthon.on(admin_cmd(pattern="م4(?: |$)(.*)"))    
 async def iq(event):
-    await edit_or_reply(event, 
-"""**  ⦑  اوامر الكروب 2  ⦒  : **
-———————×——————— 
-الأمر ⦙  ( .تاك بالكلام + الكلمه + معرف الشخص )
-الشرح  ⦙ يعمل تاك للشخص بالرابط جربه وتعرف
-———————×——————— 
-الأمر ⦙  ( .نسخ + الرد على رساله )
-الشرح  ⦙ يرسل الرساله التي رديت عليها 
-———————×——————— 
-الأمر ⦙  ( .ابلاغ الادمنيه )
-الشرح  ⦙ يعمل تاك لجميع الادمنيه  
-———————×——————— 
-الأمر ⦙  ( .المشرفين )
-الشرح  ⦙ يجلب اليك جميع المشرفين 
-الأمر ⦙  ( .البوتات )
-الشرح  ⦙ يجلب الك جميع بوتات في المجموعه او قناه
-———————×———————
-الأمر ⦙  ( .حظر + الرد على شخص )
-الشرح  ⦙ حظر الشخص من المجموعه 
-الأمر  ⦙  ( .الغاء الحظر + الرد على شخص )
-الشرح  ⦙ يلغي حظر الشخص من المجموعه
-———————×——————— 
-الأمر  ⦙  ( .بدء مكالمه )
-الشرح  ⦙ يقوم بتشغيل مكالمه 
-الأمر ⦙  ( .دعوه للمكالمه )
-الشرح  ⦙ يتم دعوه الاعضاء للمكالمة الشغاله
-———————×——————— 
-الأمر ⦙  ( .تنزيل مشرف + الرد على شخص )
-الشرح  ⦙ يقوم بازاله الشخص من الاشراف 
-———————×——————— 
-الأمر  ⦙  ( .تثبيت + الرد على رساله )
- شرح : تثبيت الرساله التي رديت عليها
-———————×——————— 
-الأمر ⦙  ( .الأعضاء )
-الشرح  ⦙ اضهار قائمة الاعضاء للمجموعة 
-———————×——————— 
-الأمر ⦙  ( .تفليش )
-الشرح  ⦙  أزاله جميع اعضاء المجموعه
- ———————×——————— 
-الأمر ⦙  ( .مسح المحظورين )
-الشرح  ⦙ يمسح جميع المحظورين 
-———————×——————— 
-الأمر  ⦙  ( .المحذوفين )
-الشرح  ⦙  يجلب لك الحسابات المحذوفه 
-الأمر ⦙  ( .المحذوفين تنظيف )
-الشرح  ⦙ مسح الحسابات المحذوفه
-———————×——————— 
-الأمر ⦙  ( .احصائيات الاعضاء )
-الشرح  ⦙ يجلب جميع معلومات اعضاء المجموعه 
-———————×——————— 
-الأمر ⦙  ( .عدد رسائلي )
-الشرح  ⦙ يقوم بحساب عدد رسائلك 
-———————×——————— 
-الأمر ⦙  ( .جلب الاحداث )
-الشرح  ⦙ يجلب اخر 20 رساله محذوفه
-———————×———————
-الأمر  ⦙ ( .حظر عام + الرد على شخص ) 
-الشرح  ⦙ حظر من جميع الكروبات   
-———————×———————
-الأمر  ⦙ ( .الغاء حظر عام + الرد على شخص )
-الشرح  ⦙ الغاء حضر العام  
-———————×———————
-الأمر  ⦙ ( .المحظورين عام )
-الشرح ⦙  يضهر المحضورين عام 
-———————×———————
-الشرح  ⦙ ( .تقيد + الرد على شخص )
-الأمر  ⦙ يقيد الشخص من المجموعة 
-———————×———————
-شرح الأوامر : ( @L3LL3 ) .
-قناه السورس : ( @IQTHON ) .
-جميع الاوامر تكون بدايتها نقطة .""")
+    await edit_or_reply(event, "**🚹  ⦑  اوامر الحساب  4     ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n\n⑴ ⦙  `.الحماية تشغيل`\n**✐ : يقوم بتشغيل رساله الحمايه في الخاص بحيث اي شخص يراسلك سوف يقوم بتنبيه بعدم تكرار وايضا يوجد ازرار اونلاين ❝**\n⑵  ⦙ `.الحماية ايقاف`\n**✐ :  يقوم بتعطيل رساله الحماية الخاص وعد تحذير اي شخص❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n\n⑶  ⦙ `.قبول`\n**✐ : يقوم بقبول الشخص للأرسال اليك بدون حظره ❝**\n ⑷  ⦙  `.رفض`\n**✐ :  الغاء قبول الشخص من الارسال وتحذيره ايضا❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n\n⑸  ⦙ `.مرفوض`\n**✐ :  حظر الشخص من دون تحذير حظر مباشر م الخاص ❝**\n⑹  ⦙  `.المقبولين`\n**✐ :  عرض قائمة المقبولين في الحماية ❝**\n⑺ ⦙   `.جلب الوقتيه + الرد على الصورة`\n**✐ :  الرد على صوره سريه وقتيه سوف يتم تحويلها الى رسائل المحفوضه كصورة عادية ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n\n⑻  ⦙  `.تاك بالكلام + الكلمه + معرف الشخص`\n**✐:  يسوي تاك للشخص بالرابط جربه وتعرف ❝**\n⑼  ⦙ `.نسخ + الرد على رساله`\n**✐:  يرسل الرساله التي رديت عليها ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n\n⑽ ⦙  `.احسب + المعادله`\n**✐:  يجمع او يطرح او يقسم او يجذر المعادله الأتية ❝**\n\n")
 @iqthon.on(admin_cmd(pattern="م5(?: |$)(.*)"))    
 async def iq(event):
-    await edit_or_reply(event, 
-"""**⦑  اوامر تحويل الصيغ  ⦒  :**
-———————×——————
-الأمر ⦙  .تحويل بصمه + الرد ع الصوت mp3
-الشرح : يحول صوت mp3 الى بصمه 
-———————×——————
-الأمر ⦙  .تحويل صوت + الرد ع الصوت 
-الشرح  :  يحول البصمه الى صوت   mp3
-———————×——————
-الأمر  ⦙  .تحويل ملصق + الرد ع الصوره 
-الشرح :  يحول الصوره الى ملصق 
-———————×——————
-الأمر  ⦙ . تحويل صوره + الرد ع الملصق 
-الشرح :  يحول الملصق الى صوره 
-———————×——————
-الأمر ⦙  .تحويل متحركه + الرد ع الفيديو 
-الشرح :  يقوم بتحويل الفيديو الى متحركه 
-———————×——————
-الأمر  ⦙  .بي دي اف + الرد ع الملف او الصوره
-الشرح :  يحول الملف الى بي دي اف 
-———————×—————— 
-الأمر  ⦙ .ملصقي + الرد ع الرساله 
-الشرح  : يحول رساله الى ملصق 
-———————×——————
-الأمر  ⦙  . تليجراف ميديا + الرد ع الفيديو او صوره
-الشرح :  يقوم بتحويل الفيديو او الصوره الى رابط تليجراف  
-———————×——————
-الأمر ⦙  ( .تحويل رساله + الرد ع الملف )
-الشرح :  يقوم بجلب جميع الكتابه الذي داخل الملف ويقوم بأرسالها اليك 
-———————×——————
-الأمر ⦙ ( .تحويل فديو دائري + الرد ع الفيديو )
-الشرح : يحول الفيديو الى فيديو دائري مرئي 
-———————×——————
-الأمر  ⦙ ( .تحويل ملصق دائري + الرد ع الملصق )
-الشرح :  يحول الملصق الى ملصق دائري
-———————×——————
- الأمر ⦙  ( .ترجمه en + الرد ع الرساله )
-الشرح :  يقوم بترجمه الرساله الى اللغه الانكليزيه
-———————×——————
-الشرح ⦙ ( .ترجمه ar + الرد ع الشخص )
-الأمر  :  يقوم بترجمه الرساله الى اللغه العربيه 
-———————×——————
-شرح الأوامر : ( @L3LL3 ) .
-قناه السورس : ( @IQTHON ) .
-جميع الاوامر تكون بدايتها نقطة .""")
+    await edit_or_reply(event, "**🚹  ⦑   اوامر السورس   ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑴ ⦙ `.السورس` \n**✐  : يضهر لك معلومات السورس ومدة تنصيبك او امر .فحص ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑵ ⦙ `.رابط التنصيب` \n**✐  : سوف يعطيك رابط التنصيب ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮  \n⑶ ⦙ `.حساب كيثاب + اسم الحساب` \n**✐  : ينطيك معلومات الحساب وسورساته بموقع جيت هوب ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑷ ⦙ `.حذف جميع الملفات` \n**✐  : يحذف جميع ملفات تنصيبك ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑸ ⦙ `.المده` \n**✐  : يضهر لك مدة تشغيل بوت تيبثون لديك ❝** \n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑹ ⦙ `.فارات تنصيبي` \n**✐  : يجلب لك جميع الفارات التي لديك وجميع معلومات تنصيبك في هيروكو ❝** \n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑺ ⦙ `.تحميل ملف + الرد ع الملف`\n**✐ : يحمل ملفات تيبثون ❝**\n\n⑻ ⦙  `.مسح ملف + الرد ع الملف` \n**✐ :  يمسح الملف الي حملته  ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n⑼ ⦙  `.تحديث` \n**✐ :  امر لأعاده التشغيل وتحديث ملفات السورس وتسريع التيبثون  ❝**\n\n⑽ ⦙ `.اطفاء مؤقت + عدد الثواني`\n**✐ : يقوم بأطفاء التيبثون بعدد الثواني الي ضفتها  عندما تخلص الثواني سيتم اعاده تشغيل التيبثون ❝**\n⑾ ⦙  `.الاوامر` \n**✐ :   لأضهار جميع اوامر السورس اونلاين❝**\n⑿ ⦙  `.اوامري` \n**✐ :   لأضهار جميع اوامر السورس كتابه بدون اونلاين❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n⒀ ⦙  `.استخدامي` \n**✐ :   يضهر لك كمية استخدامك لتيبثون❝**\n⒁ ⦙  `.تاريخ التنصيب` \n**✐ :   يضهر لك تاريخ تنصيبك❝**"   ) 
 @iqthon.on(admin_cmd(pattern="م6(?: |$)(.*)"))    
 async def iq(event):
-    await edit_or_reply(event, """
-**  ⦑   اوامر الالعاب 1   ⦒  :**
-———————×———————
-شرح  ⦙   نسبة وهميه - الأوامر :
-الأمر  ⦙ ( .نسبه الحب + الرد ع الشخص )
-الأمر  ⦙ ( . نسبه الانحراف + الرد ع الشخص )
-الأمر  ⦙ ( .نسبه الكراهيه + الرد ع الشخص )
-الأمر  ⦙ ( .نسبه المثليه +الرد ع الشخص )
-الأمر  ⦙ ( . نسبه النجاح + الرد ع الشخص )
-الأمر  ⦙ ( .نسبه الانوثه + الرد ع الشخص )
-الأمر  ⦙ ( .نسبه الغباء + الرد ع الشخص )
-———————×———————
-شرح  ⦙  رفع وهمي - الأوامر  :
-الأمر  ⦙ ( .رفع زباله + الرد ع الشخص )
-الأمر  ⦙ ( .رفع منشئ + الرد ع الشخص )
-الأمر  ⦙ ( .رفع مدير + الرد ع الشخص )
-الأمر  ⦙ ( .رفع مطور + الرد ع الشخص )
-الأمر  ⦙ ( .رفع مثلي + الرد ع الشخص )
-الأمر  ⦙ ( .رفع كواد + الرد ع الشخص )
-الأمر  ⦙ ( .رفع مرتبط + الرد ع الشخص )
-الأمر  ⦙ ( .رفع مطي + الرد ع الشخص )
-الأمر  ⦙ ( .رفع كحبه + الرد ع الشخص )
-الأمر  ⦙ ( .رفع زوجتي + الرد ع الشخص )
-الأمر  ⦙ ( .رفع صاك + الرد ع الشخص )
-الأمر  ⦙ ( .رفع صاكه + الرد ع الشخص )
-———————×———————
-الأمر  ⦙ ( .كت )
-الشرح ⦙ لعبه اسأله كت تويت عشوائيه 
-———————×———————
-الأمر  ⦙ ( .اكس او )
-الشرح ⦙  لعبه اكس او دز الامر و اللعب ويا صديقك 
-———————×———————
-الأمر  ⦙  ( .همسه + الكلام + معرف الشخص )
-الشرح  ⦙  يرسل همسه سريه الى معرف الشخص فقط هو يكدر يشوفها  
-———————×———————
-الأمر  ⦙  ( .رسم شعار + الاسم )
-الشرح ⦙  يرسم شعار للأسم  
-———————×———————
-الأمر  ⦙ ( .نص ثري دي + الكلمه )
-الشرح ⦙ يقوم بكتابه الكلمه بشكل ثلاثي الابعاد 
-———————×———————
-الأمر  ⦙  ( .كلام متحرك + الكلام )
-الشرح ⦙ يقوم بكتابه الكلام حرف حرف  
-———————×———————
-الأمر ⦙ ( .ملصق متحرك + الكلام )
-الشرح  ⦙ يقوم بكتابه الكلام بملصق متحرك  
-———————×———————
-الأمر  ⦙  ( .بورن + معرف الشخص + الكلام + الرد ع اي صوره )
-الشرح ⦙  قم بتجربه الامر لتعرفه +18  
-———————×———————
-الأمر  ⦙ ( .رسم قلوب + الاسم )
-الشرح  ⦙  يكتب الاسم ع شكل قلوب  
-———————×———————
-
-⑴  ⦙  ( .كتابه وهمي + عدد الثواني )
-⑵  ⦙  ( .فيديو وهمي + عدد الثواني )
-⑶  ⦙  ( .صوره وهمي + عدد الثواني )
-⑷  ⦙  ( .جهه اتصال وهمي + عدد الثواني )
-⑸  ⦙  ( .موقع وهمي + عدد الثواني )
-⑹  ⦙  ( .لعب وهمي + عدد الثواني )
-
-الشرح  ⦙ هذا الامر يقوم بالارسال الوهمي يعني يضهر للناس انو نته جاي تكتب او جاي ترسل صوره او ترسل فيديو او ترسل جهه اتصالك حسب الفتره الي تحددها بالثواني
-———————×———————
-⑴  ⦙ ( .شوت + الكلمة )
-✐ :  امر تسليه جربه وتعرف  
-———————×———————
-⑵  ⦙ ( .كتابه + الكلام بالانكلش )
-✐ :   يكتب الكلام على ورقه بخط اليد 100%   
-———————×———————
-الشرح  ⦙   العـاب اخـرى فقط قم بنسخ الأمر وارسالـة   :- الأوامر :
-1. - ( .لعبه تيك توك اربعه )
-2. - ( .لعبه تيك توك اثنان 3 )
-3. - ( .لعبه ربط أربعة )
-4. - ( .لعبه قرعة )
-5. - ( .لعبه حجر-ورقة-مقص )
-6. - ( .لعبه روليت )
-7. - ( .لعبه داما )
-8. - ( .لعبه داما تجمع )
-———————×———————
-الأمر  ⦙ ( .هديه + الكلام )
-الشرح :  قم بارسال الامر بجانبه اكتب اي شيئ واول شخص سيفتحها سوف يكتب اسمه جربها  
-———————×——————— 
-الأمر  ⦙ ( .ضفدع + الكلمه )
-الشرح :   يدعم انكليزي فقط + يحول الكلمه لكتابه ضفدع جربه وتفهم   
-———————×——————— 
-الأمر  ⦙  ( .لافته + الكلمه )
-الشرح :   يدعم انكليزي فقط + يحول الكلمه بلافته ملصق متحرك جربه وتعرف    
-———————×——————— 
-الأمر ⦙ ( .تكرار_كلمه  + الجملة )
-الشرح : يكرر الك كلام الجملة 
-———————×——————— 
-الأمر ⦙  (.صفق + الرد على الكلام )
-الشرح : جربه وتعرف مضحك 
-———————×——————— 
-الأمر  ⦙ ( .حضر وهمي + الرد على شخص )
-الشرح : حظر وهمي جربه وتعرف 
-———————×———————
-الأمر ⦙ ( .خط ملصق + الكلمه )
-الشرح : يدعم انكليزي فقط + يحول الكتابه لملصق 
-———————×———————
-الأمر  ⦙ ( .شعر )
-الشرح : يرسل الك شعر ميمز او مضحك 
-———————×———————
-شرح الأوامر : ( @L3LL3 ) .
-قناه السورس : ( @IQTHON ) .
-جميع الاوامر تكون بدايتها نقطة .""")
+    await edit_or_reply(event, "**🚹  ⦑   اوامر الوقتي   ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n ⑴ ⦙ `.اسم وقتي`\n**✐ : يضع الوقت المزخرف في اسمك تلقائيا ❝**\n\n ⑵ ⦙  `.نبذه وقتيه`\n**✐ : يضع الوقت المزخرف في نبذه الخاصه بك تلقائيا ❝**\n\n⑶⦙ `.صوره وقتيه`\n**✐ : يضع لك الوقت لمزخرف في صورتك تغير تلقائي ❝**\n\n\n⑷⦙ `.ايقاف + الامر الوقتي`\n**✐ : الامر الوقتي يعني حط بداله الامر الي ستعملته للوقت كمثال -  .ايقاف اسم وقتي او .ايقاف نبذه وقتيه او .ايقاف صوره وقتي ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n ☭︙ يوجد شرح مفصل عن الامر هنا : @a_aaaf")
 @iqthon.on(admin_cmd(pattern="م7(?: |$)(.*)"))    
 async def iq(event):
-    await edit_or_reply(event, 
-"""**  ⦑   بصمات تحشيش 1   ⦒  :**
-———————×———————
-(.ص1) ⦙  ابو  عباس  لو  تاكل  خره
-(.ص2) ⦙  استمر  نحن  معك
-(.ص3) ⦙  افحط  بوجه
-(.ص4) ⦙  اكعد  لا  اسطرك  سطره  العباس
-(.ص5) ⦙  اللهم  لا  شماته
-(.ص6) ⦙  امرع  دينه
-(.ص7) ⦙  امشي  بربوك
-(.ص8) ⦙  انت  اسكت  انت  اسكت
-(.ص9) ⦙  انت  سايق  زربه
-(.ص10) ⦙  اوني  تشان
-(.ص11) ⦙  برافو  عليك  استادي 
-(.ص12) ⦙  بلوك  محترم
-(.ص13) ⦙  بووم  في  منتصف  الجبهة 
-(.ص14) ⦙  بيتش 
-(.ص15) ⦙  تخوني  ؟
-(.ص16) ⦙  تره  متكدرلي
-(.ص17) ⦙  تعبان  اوي
-(.ص18) ⦙  تكذب
-(.ص19) ⦙  حسبي  الله
-(.ص20) ⦙  حشاش 
-(.ص21) ⦙  حقير  
-(.ص22) ⦙  خاص  
-(.ص23) ⦙  خاله  ما  تنامون  
-(.ص24) ⦙  خرب  شرفي  اذا  ابقى  بالعراق 
-(.ص25) ⦙  دكات  الوكت  الاغبر  
-(.ص26) ⦙  ررردح  
-(.ص27) ⦙  سلامن  عليكم  
-(.ص28) ⦙  بوم منتصف جبهه   
-(.ص29) ⦙  شكد  شفت  ناس  مدودة
-(.ص30) ⦙ شلون  ، 
-(.ص31) ⦙ صح  لنوم  
-(.ص32) ⦙ صمت  
-(.ص33) ⦙ ضحكة  مصطفى  الحجي  
-(.ص34) ⦙ طماطه  
-(.ص35) ⦙ طيح  الله  حضك  
-(.ص36) ⦙ فاك  يوو  
-(.ص37) ⦙ اني فرحان وعمامي فرحانين
-(.ص38) ⦙ لا  تضل  تضرط  
-(.ص39) ⦙ لا  تقتل  المتعه  يا  مسلم  
-(.ص40) ⦙ لا  مستحيل  
-(.ص41) ⦙ لا  والله  شو  عصبي  
-(.ص42) ⦙ لش  
-(.ص43) ⦙ لك  اني  شعليه  
-(.ص44) ⦙ ما  اشرب  
-(.ص45) ⦙ مع  الاسف  
-(.ص46) ⦙ مقتدى  
-(.ص47) ⦙ من  رخصتكم  
-(.ص48) ⦙ منو  انت  
-(.ص49) ⦙ منورني  
-(.ص50) ⦙  نتلاكه  بالدور  الثاني 
-(.ص51) ⦙  نستودعكم  الله  
-(.ص52) ⦙  ها  شنهي  
-(.ص53) ⦙  ههاي  الافكار  حطها ب
-(.ص54) ⦙  ليش شنو سببها ليش
-(.ص55) ⦙  يموتون  جهالي
-(.ص56) ⦙  اريد انام
-(.ص57) ⦙  افتحك فتح
-(.ص58) ⦙  اكل خره لدوخني
-(.ص59) ⦙  السيد شنهو السيد
-(.ص60) ⦙  زيج2
-(.ص61) ⦙  زيج لهارون
-(.ص62) ⦙  زيج الناصرية
-(.ص63) ⦙  راقبو اطفالكم
-(.ص64) ⦙  راح اموتن
-(.ص65) ⦙  ذس اس مضرطة
-(.ص66) ⦙  دروح سرسح منا
-(.ص67) ⦙  خويه ما دكوم بيه
-(.ص68) ⦙  خلصت تمسلت ديلة كافي انجب
-(.ص69) ⦙  بعدك تخاف
-(.ص70) ⦙  بسبوس
-(.ص71) ⦙  اني بتيتة كحبة
-(.ص72) ⦙  انعل ابوكم لابو اليلعب وياكم طوبة
-(.ص73) ⦙  انت شدخلك
-(.ص74) ⦙  انا ماشي بطلع
-(.ص75) ⦙  امداك وامده الخلفتك
-(.ص76) ⦙  امبيههههه
-(.ص77) ⦙  هدي بيبي
-(.ص78) ⦙  هاه صدك تحجي
-(.ص79) ⦙  مو كتلك رجعني
-(.ص80) ⦙  مامرجية منك هاية
-(.ص81) ⦙  ليش هيجي
-(.ص82) ⦙  كـــافـي
-(.ص83) ⦙  كس اخت السيد
-(.ص84) ⦙  شنو كواد ولك اني هنا
-(.ص85) ⦙  شجلبت
-(.ص86) ⦙  شبيك وجه الدبس
-(.ص87) ⦙  سييييي
-(.ص88) ⦙  زيجج1
-(.ص89) ⦙  يموتون جهالي
-(.ص90) ⦙  ياخي اسكت اسكت
-(.ص91) ⦙  وينهم
-(.ص92) ⦙  هيلو سامر وحود
-(.ص93) ⦙  هو
-(.ص94) ⦙  ههاي الافكار حطها
-  ———————×———————
-شرح الأوامر : ( @L3LL3 ) .
-قناه السورس : ( @IQTHON ) .
-جميع الاوامر تكون بدايتها نقطة .""")
+    await edit_or_reply(event, "**🚹  ⦑    الاوامر المتحركه للتسلية   ⦒  :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n\n `.غبي`\n`.تفجير`\n`.قتل`\n`.طوبه`\n`.مربعات`\n`.حلويات`\n`.نار`\n`.هلكوبتر`\n`.اشكال مربع`\n`.دائره`\n`.قلب `\n`.مزاج`\n`.قرد`\n`.ايد`\n`.العد التنازلي`\n`.الوان قلوب`\n`.عين`\n`.ثعبان`\n`.رجل`\n`.رموز شيطانيه`\n`.قطار`\n`.موسيقى`\n`.رسم`\n`.فراشه`\n`.مكعبات`\n`.مطر`\n`.تحركات`\n`.ايموجيات`\n`.طائره`\n`.شرطي`\n`.النضام الشمسي`\n`.افكر`\n`.اضحك`\n`.ضايج`\n`.ساعه متحركه`\n`.بوسه`\n`.قلوب`\n`.رياضه`\n`.الارض`\n`.قمر`\n`.اقمار`\n`.قمور`\n`.زرفه`\n`.بيبي`\n`.تفاعلات`\n`.اخذ قلبي`\n`.اشوفج السطح`\n`.احبك`\n`.اركض`\n`.روميو`\n`.البنك`\n`.تهكير + الرد على شخص`\n`.طياره`\n`.مصاصه`\n`.مصه`\n`.جكه`\n`.اركضلي`\n`.حمامه`\n`.فواكه`\n`.الحياة`\n`.هلو`\n`.مربعاتي`\n`.اسعاف`\n`.سمايلي`\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n**")
 @iqthon.on(admin_cmd(pattern="م8(?: |$)(.*)"))    
 async def iq(event):
-    await edit_or_reply(event, 
-"""**⦑    الاوامر المتحركه للتسلية   ⦒  :**
-———————×——————— 
-( .غبي ) ( .تفجير ) ( .قتل ) ( .طوبه ) ( .مربعات ) ( .حلويات ) ( .نار ) ( .هلكوبتر ) ( .اشكال مربع ) ( .دائره )( .قلب ) ( .مزاج ) ( .قرد ) ( .ايد ) ( .العد التنازلي ) ( .الوان قلوب ) ( .عين ) ( .ثعبان ) ( .رجل ) ( .رموز شيطانيه ) ( .قطار ) ( .موسيقى ) ( .رسم ) ( .فراشه ) ( .مكعبات ) ( .مطر ) ( .تحركات ) ( .ايموجيات ) ( .طائره )( .شرطي ) ( .النضام الشمسي ) ( .افكر ) ( .اضحك ) ( .ضايج ) ( .ساعه متحركه )( .بوسه ) ( .قلوب ) ( .رياضه )( .الارض ) ( .قمر ) (.اقمار ) ( .قمور ) ( .زرفه ) ( .بيبي ) ( .تفاعلات ) ( .اخذ قلبي ) 
-( .اشوفج السطح ) ( .احبك ) ( .اركض ) ( .روميو ) ( .البنك ) ( .تهكير ) ( .طياره ) ( .مصاصه ) ( .مصه ) ( .جكه ) ( .اركضلي ) ( .حمامه ) ( .فواكه ) ( .الحياة ) ( .هلو ) ( .مربعاتي ) ( .اسعاف ) ( .سمايلي )
-———————×———————
-""")
+    await edit_or_reply(event, "**🚹  ⦑  اوامـر الـفـارات  ⦒ :**\n\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑴ ⦙ `.اضف فار + اسم افار + القيمه`\n**✐ :  يضيف اليك الفار الخاص بسورس ❝**\n⑵ ⦙ `.حذف فار + اسم الفار`\n**✐ :  يحذف الفار الذي اضفته ❝**\n⑶  ⦙ `.جلب فار + اسم الفار`\n**✐ :  يرسل اليك معلومات الفار وقيمه الفار ❝**\n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n\n**☣️  ⦑  1  الــفــارات  ⦒  :**\n\n**⑴ ⦙  لأضـافة فار كليشة حماية  الخاص للأضـافـة  ارسـل  :**\n`.اضف فار PM_TEXT + كليشة الحمايه الخاصة بـك`\n\n**⑵  ⦙ لأضـافة فار  ايدي الكـروب للأضافة أرسل بالرسائل محفوضة : **\n`.اضف فار PM_LOGGER_GROUP_ID  + ايدي مجموعتك`\n\n**⑶  ⦙ لأضـافة فار الايمـوجي  : **\n`.اضف فار ALIVE_EMOJI + الايموجي`\n\n **⑷  ⦙ لأضـافة فار  رسـاله بداية أمر السورس  : **\n `.اضف فار ALIVE_TEXT + النص`\n\n**⑸  ⦙  لأضـافة فار صورة رساله حماية  الخاص :**\n `.اضف فار PM_PIC + رابط تليجراف الصورة او الفيديو`\n\n **⑹ ⦙  لأضافـة فار صورة او فيديو أمر  السـورس : **\n `.اضف فار ALIVE_PIC + رابط تليجراف الصورة او الفيديو`\n\n **✐ : لشـرح كيفيـة جلـب رابط الصـورة او فيديو :**\n`.تليجراف ميديا + الرد على صورة او فيديو`\n\n ⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮\n\n**⑺ ⦙  لتغير كليشة الفحص كاملة :**\n`.اضف فار ALIVE_TELETHONIQ + كليشه مع المتغيرات`\n\n**✐ : متغيرات كليشه الفحص  :**\n\n1 -  :  `{uptime}` :  مده التشغيل بوتك \n2 -  :  `{my_mention}`  : رابط حسابك  \n3 -  :  `{TM}`  : الوقت \n4 -  :  `{ping} ` : البنك \n5 -  : ` {telever} ` : نسخه تيبثون \n6 -  :  `{tg_bot}` :  معرف بوتك \n ☭︙ يوجد شرح مفصل عن الامر هنا : @aa_aaf \n⤪⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⟿⤮ \n⑻ ⦙ `.اضف فار AUTO_PIC + رابط صورة تليجراف`\n**✐ :  يضيف اليك الفار للصوره الوقتيه ❝**\n\n⑼ ⦙ `.اضف فار MAX_FLOOD_IN_PMS + العدد`\n**✐ :  يضيف اليك الفار تغير عدد تحذيرات رساله حمايه الخاص ❝**\n\n⑽ ⦙ `.اضف فار DEFAULT_BIO + الجمله`\n**✐ :  يضيف اليك الفار تغير جمله النبذه الوقتية  ❝**\n\n") 
 @iqthon.tgbot.on(CallbackQuery(data=re.compile(rb"orders")))
 @check_owner
 async def inlineiqthon(iqthon):
-    text = "**♛︙ قـائمـه الاوامـر :**\n**♛︙ قنـاه السـورس :** @IQTHON\n**♛︙ شـرح اوامـر السـورس : @L3LL3**\n**♛︙ شـرح فـارات السـورس : @TEAMTELETHON** "
+    text = "**☭︙ قـائمـه الاوامـر :**\n**☭︙ قنـاه السـورس :** @E9N99\n**☭︙ شـرح اوامـر السـورس : @a_aaaf**\n**☭︙ شـرح فـارات السـورس : @aa_aaf** "
     buttons = [[Button.inline("اوامر السورس", data="order1"), Button.inline("اوامر الحساب", data="ord1hs"),],[Button.inline("اوامر الكروب", data="ord1G"), Button.inline("اوامر الالعاب", data="ord1pl"),],[Button.inline("اوامر الصيغ", data="ordsag1"), Button.inline("اوامر الاغاني", data="ordSONG"),], [Button.inline("اسم وقتي", data="order13"), Button.inline("اوامر الاعلانات", data="ordahln1"),],[Button.inline("اوامر التسليه", data="order14"),],[Button.inline("الفارات", data="ordvars"),]]
     await iqthon.edit(text, buttons=buttons)
 @iqthon.tgbot.on(CallbackQuery(data=re.compile(rb"ord1G")))
@@ -1652,17 +880,17 @@ async def inlineiqthon(iqthon):
 async def install(event):
     if event.reply_to_msg_id:
         try:
-            downloaded_file_name = await event.client.download_media(await event.get_reply_message(), "iqthon/plugins/")
+            downloaded_file_name = await event.client.download_media(await event.get_reply_message(), "userbot/plugins/")
             if "(" not in downloaded_file_name:
                 path1 = Path(downloaded_file_name)
                 shortname = path1.stem
                 load_module(shortname.replace(".py", ""))
-                await edit_delete(event, f"**♛︙   تم تثبيـت الملـف بنجـاح ✓** `{os.path.basename(downloaded_file_name)}`", 10)
+                await edit_delete(event, f"**☭︙   تم تثبيـت الملـف بنجـاح ✓** `{os.path.basename(downloaded_file_name)}`", 10)
             else:
                 os.remove(downloaded_file_name)
-                await edit_delete(event, "**♛︙  حـدث خطـأ، هـذا الملف مثبـت بالفعـل !**", 10)
+                await edit_delete(event, "**☭︙  حـدث خطـأ، هـذا الملف مثبـت بالفعـل !**", 10)
         except Exception as e:
-            await edit_delete(event, f"**♛︙  خطـأ ⚠️:**\n`{str(e)}`", 10)
+            await edit_delete(event, f"**☭︙  خطـأ ⚠️:**\n`{str(e)}`", 10)
             os.remove(downloaded_file_name)
 @iqthon.tgbot.on(CallbackQuery(data=re.compile(rb"G2")))
 @check_owner
@@ -1680,9 +908,9 @@ async def inlineiqthon(iqthon):
 @iqthon.on(admin_cmd(pattern="مسح الملف(?: |$)(.*)"))    
 async def unload(event):
     shortname = event.pattern_match.group(1)
-    path = Path(f"iqthon/plugins/{shortname}.py")
+    path = Path(f"userbot/plugins/{shortname}.py")
     if not os.path.exists(path):
-        return await edit_delete(event, f"**♛︙   ملـف مـع مسـار ⚠️ {path} لإلغـاء التثبيـت ⊠**")
+        return await edit_delete(event, f"**☭︙   ملـف مـع مسـار ⚠️ {path} لإلغـاء التثبيـت ⊠**")
     os.remove(path)
     if shortname in CMD_LIST:
         CMD_LIST.pop(shortname)
@@ -1692,9 +920,9 @@ async def unload(event):
         CMD_HELP.pop(shortname)
     try:
         remove_plugin(shortname)
-        await edit_or_reply(event, f"**♛︙   {shortname} تم إلغـاء التثبيـت بنجـاح ✓**")
+        await edit_or_reply(event, f"**☭︙   {shortname} تم إلغـاء التثبيـت بنجـاح ✓**")
     except Exception as e:
-        await edit_or_reply(event, f"**♛︙  تمـت الإزالـة بنجـاح ✓ : {shortname}\n{str(e)}**")
+        await edit_or_reply(event, f"**☭︙  تمـت الإزالـة بنجـاح ✓ : {shortname}\n{str(e)}**")
 @iqthon.on(admin_cmd(pattern="هاش ([\s\S]*)"))    
 async def gethash(hash_q):
     hashtxt_ = "".join(hash_q.text.split(maxsplit=1)[1:])
@@ -1786,7 +1014,6 @@ async def repoiqthon(iqthon):
     response = await bot.inline_query(TG_BOT, "اوامر الكروب(?: |$)(.*)")
     await response[0].click(iqthon.chat_id)
     await iqthon.delete()
-
 if Config.TG_BOT_USERNAME is not None and tgbot is not None:
     @check_owner
     @tgbot.on(events.InlineQuery)
@@ -1795,31 +1022,20 @@ if Config.TG_BOT_USERNAME is not None and tgbot is not None:
         result = None
         query = iqthon.text
         await bot.get_me()
-        
-        if query.startswith("(صيانه|صيانه)") and iqthon.query.user_id == bot.uid:
-            try:
-                buttons = [[Button.inline("اوامر السورس", data="order1"), Button.inline("اوامر الحساب", data="ord1hs"),],[Button.inline("اوامر الكروب", data="ord1G"), Button.inline("اوامر الالعاب", data="ord1pl"),],[Button.inline("اوامر الصيغ", data="ordsag1"), Button.inline("اوامر الاغاني", data="ordSONG"),], [Button.inline("اسم وقتي", data="order13"), Button.inline("اوامر الاعلانات", data="ordahln1"),],[Button.inline("اوامر التسليه", data="order14"),],[Button.inline("الفارات", data="ordvars"),]]
-                result = builder.article(title="iqthon",text=help2,buttons=buttons,link_preview=False)
-                await iqthon.answer([result] if result else None)
-            except BotInlineDisabledError: 
-                await iqthon.send_message( "يجب تفعيل الاونلاين من بوت فاذر اولا " )
-           
-           
-@bot.on(admin_cmd(outgoing=True, pattern="(صيانه|صيانه)"))
+        if query.startswith("(الاوامر|الأوامر)") and iqthon.query.user_id == bot.uid:
+            buttons = [[Button.inline("اوامر السورس", data="order1"), Button.inline("اوامر الحساب", data="ord1hs"),],[Button.inline("اوامر الكروب", data="ord1G"), Button.inline("اوامر الالعاب", data="ord1pl"),],[Button.inline("اوامر الصيغ", data="ordsag1"), Button.inline("اوامر الاغاني", data="ordSONG"),], [Button.inline("اسم وقتي", data="order13"), Button.inline("اوامر الاعلانات", data="ordahln1"),],[Button.inline("اوامر التسليه", data="order14"),],[Button.inline("الفارات", data="ordvars"),]]
+            result = builder.article(title="iqthon",text=help2,buttons=buttons,link_preview=False)
+            await iqthon.answer([result] if result else None)
+@bot.on(admin_cmd(outgoing=True, pattern="(الاوامر|الأوامر)"))
 async def repoiqthon(iqthon):
     if iqthon.fwd_from:
         return
     TG_BOT = Config.TG_BOT_USERNAME
-    
     if iqthon.reply_to_msg_id:
-        try:
-            await iqthon.get_reply_message()
-            response = await bot.inline_query(TG_BOT, "(الاوامر|الأوامر)")
-            await response[0].click(iqthon.chat_id)
-            await iqthon.delete()
-        except BotInlineDisabledError: 
-            await iqthon.send_message( "يجب تفعيل الاونلاين من بوت فاذر اولا " )
-
+        await iqthon.get_reply_message()
+    response = await bot.inline_query(TG_BOT, "(الاوامر|الأوامر)")
+    await response[0].click(iqthon.chat_id)
+    await iqthon.delete()
 if Config.TG_BOT_USERNAME is not None and tgbot is not None :
     @check_owner
     @tgbot.on(events.InlineQuery)
@@ -1854,39 +1070,6 @@ if Config.TG_BOT_USERNAME is not None and tgbot is not None :
             buttons = [[Button.inline("اوامر الالعاب", data="ord1pl"),]]
             result = builder.article(title="iqthon", text=help2, buttons=buttons, link_preview=False)
             await iqthon.answer([result] if result else None)
-
-chat = "@BotFather"
-@iqthon.on(events.NewMessage(outgoing=True, pattern="^.بوت ?(.*)"))
-async def _(event):
-    if event.fwd_from:
-        return
-    if event.pattern_match.group(1):
-        text, username = event.pattern_match.group(1).split()
-
-    else:
-        await event.edit("قم بوضع الامر + اسم البوت + معرف البوت !!`")
-        return
-
-    async with event.client.conversation(chat) as conv:
-        try:
-            await conv.send_message("/newbot")
-            audio = await conv.get_response()
-            await conv.send_message(text)
-            audio = await conv.get_response()
-            await conv.send_message(username)
-            audio = await conv.get_response()
-            await event.client.forward_messages(event.chat_id, audio)
-            await event.delete()
-        except YouBlockedUserError:
-            await event.client(UnblockRequest("93372553"))
-            await conv.send_message("/newbot")
-            audio = await conv.get_response()
-            await conv.send_message(text)
-            audio = await conv.get_response()
-            await conv.send_message(username)
-            audio = await conv.get_response()
-            await event.client.forward_messages(event.chat_id, audio)
-            await event.delete()
 @bot.on(admin_cmd(outgoing=True, pattern="اوامر الالعاب(?: |$)(.*)"))
 async def repoiqthon(iqthon):
     if iqthon.fwd_from:

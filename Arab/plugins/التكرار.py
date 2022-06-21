@@ -5,15 +5,15 @@ from telethon.tl import functions, types
 from telethon.tl.functions.messages import GetStickerSetRequest
 from telethon.tl.functions.messages import ImportChatInviteRequest as Get
 from telethon.utils import get_display_name
-from Arab import iqthon
+from userbot import iqthon
 from ..core.managers import edit_delete, edit_or_reply
 from ..helpers.tools import media_type
 from ..helpers.utils import _catutils
-from ..sql_helper.globals import addgvar, gvarstatus , delgvar
+from ..sql_helper.globals import addgvar, gvarstatus
 from . import BOTLOG, BOTLOG_CHATID
 plugin_category = "extra"
 MUQT = gvarstatus("OR_MUQT") or "مؤقت"
-UNMUQT = gvarstatus("OR_UNMUQT") or "ستوب"
+
 
 async def spam_function(event, sandy, cat, sleeptimem, sleeptimet, DelaySpam=False):
   
@@ -172,10 +172,3 @@ async def spammer(event):
     await event.delete()
     addgvar("spamwork", True)
     await spam_function(event, reply, cat, sleeptimem, sleeptimet, DelaySpam=True)
-   
-@iqthon.iq_cmd(pattern=f"{UNMUQT} ?(.*)",)
-async def spammer(event):
-    reply = await event.get_reply_message()
-    await event.delete()
-    delgvar("spamwork")
-    await spam_function(event, reply, sleeptimem, sleeptimet, DelaySpam=False)
