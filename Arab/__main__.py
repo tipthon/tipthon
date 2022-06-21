@@ -9,10 +9,7 @@ from .utils import add_bot_to_logger_group, load_plugins, setup_bot, startupmess
 LOGS = logging.getLogger(
 "تيبثون العرب"
 )
-print(
-userbot.__copyright__)
-print(
-"المرخصة بموجب شروط " + userbot.__license__)
+
 cmdhr = Config.COMMAND_HAND_LER
 try:
     LOGS.info(
