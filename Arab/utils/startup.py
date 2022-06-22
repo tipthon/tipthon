@@ -15,7 +15,7 @@ from ..sql_helper.global_collection import del_keyword_collectionlist, get_item_
 from ..sql_helper.globals import addgvar, delgvar, gvarstatus
 from .klanr import load_module
 from .tools import create_supergroup
-LOGS = logging.getLogger("تيبثون العرب \n ")
+LOGS = logging.getLogger("تيبثون \n ")
 cmdhr = Config.COMMAND_HAND_LER
 async def load_plugins(folder):
     path = f"Arab/{folder}/*.py"
@@ -79,7 +79,7 @@ async def setup_bot():
         if Config.OWNER_ID == 0:
             Config.OWNER_ID = utils.get_peer_id(iqthon.me)
     except Exception as e:
-        LOGS.error(f"كـود تيرمكس - {str(e)}")
+        LOGS.error(f"قم بتغير كود تيرمكس - {str(e)}")
         sys.exit()
 async def verifyLoggerGroup():
     flag = False
@@ -99,7 +99,8 @@ async def verifyLoggerGroup():
             LOGS.error(                "♛ ︙حدث استثناء عند محاولة التحقق من PRIVATE_GROUP_BOT_API_ID.\n"                + str(e)            )
     else:
         descript = "♛ ︙ لا تحذف هذه المجموعة أو تغير إلى مجموعة (إذا قمت بتغيير المجموعة ، فسيتم فقد كل شيئ .)"
-        _, groupid = await create_supergroup(            "مجموعه بوت تيبثون الخاص بك", iqthon, Config.TG_BOT_USERNAME, descript        )
+        iqphoto1 = await iqthon.upload_file(file="SQL/extras/iqthon1.jpg")
+        _, groupid = await create_supergroup(            "تخزين تيبثون العام", iqthon, Config.TG_BOT_USERNAME, descript  ,  iqphoto1 )
         addgvar("PRIVATE_GROUP_BOT_API_ID", groupid)
         print("♛ ︙ تم إنشاء مجموعة المسـاعدة بنجاح وإضافتها إلى المتغيرات.")
         flag = True
@@ -119,7 +120,8 @@ async def verifyLoggerGroup():
             LOGS.error(                "♛ ︙ حدث استثناء عند محاولة التحقق من PM_LOGGER_GROUP_ID.\n" + str(e)            )
     else:
         descript = "♛ ︙ وظيفه هذا المجموعة لحفض رسائل التي تكون موجة اليك ان لم تعجبك هذا المجموعة قم بحذفها نهائيأ 👍 \n  الـسورس : - @E9N99"
-        _, groupid = await create_supergroup(            "كـروب تخزين الخاص", iqthon, Config.TG_BOT_USERNAME, descript        )
+        iqphoto2 = await iqthon.upload_file(file="SQL/extras/iqthon2.jpg")
+        _, groupid = await create_supergroup(            "تخزين تيبثون الخاص", iqthon, Config.TG_BOT_USERNAME, descript    , iqphoto2  )
         addgvar("PM_LOGGER_GROUP_ID", groupid)
         print("♛ ︙ تم إنشاء مجموعة خاصة لـ PRIVATE_GROUP_BOT_API_ID بنجاح وإضافتها إلى المتغيرات.")
         flag = True
